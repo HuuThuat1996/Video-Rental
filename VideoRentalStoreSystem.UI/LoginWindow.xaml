@@ -1,0 +1,44 @@
+﻿<Window x:Class="VideoRentalStoreSystem.UI.LoginWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:VideoRentalStoreSystem.UI"
+        mc:Ignorable="d"
+        Title="Đăng nhập" Height="187" Width="300" WindowStartupLocation="CenterScreen" ResizeMode="NoResize" Closing="Window_Closing" Icon="assert/ico/icon.png">
+    <Grid>
+        <StackPanel Margin="5,0,0,0">
+            <Label Content="Đăng nhập quyền quản lý"
+                   HorizontalAlignment="Center"
+                   FontSize="14"
+                   Foreground="Blue"
+                   FontWeight="Bold"/>
+            <StackPanel Orientation="Horizontal"
+                        Margin="0,10,0,10">
+                <Label Width="100"
+                       Content="Tên người dùng"
+                       Padding="0"/>
+                <TextBox Width="150"
+                         Name="tbxUserName"
+                         Tag="1"/>
+            </StackPanel>
+            <StackPanel Orientation="Horizontal">
+                <Label Width="100"
+                       Content="Mật khẩu"
+                       Padding="0"/>
+                <PasswordBox Width="150"
+                             MaxLength="25"
+                             Name="pbx"/>
+            </StackPanel>
+            <StackPanel Orientation="Horizontal"
+                        HorizontalAlignment="Right"
+                        Margin="0,10,0,0">
+                <Button Content="Đăng nhập"
+                        Name="btnLogin"
+                        Background="{x:Null}"
+                        Margin="0,0,42,0"
+                        Padding="5" Click="btnLogin_Click" Tag="3" IsDefault="True"/>
+            </StackPanel>
+        </StackPanel>
+    </Grid>
+</Window>

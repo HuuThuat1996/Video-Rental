@@ -1,0 +1,14 @@
+C:\Users\Dell\Desktop\VideoRentalStoreSystem-master\VideoRentalStoreSystem\VideoRentalStoreSystem.Test\bin\Debug\VideoRentalStoreSystem.Test.dll
+C:\Users\Dell\Desktop\VideoRentalStoreSystem-master\VideoRentalStoreSystem\VideoRentalStoreSystem.Test\bin\Debug\VideoRentalStoreSystem.Test.pdb
+C:\Users\Dell\Desktop\VideoRentalStoreSystem-master\VideoRentalStoreSystem\VideoRentalStoreSystem.Test\bin\Debug\Microsoft.VisualStudio.QualityTools.UnitTestFramework.dll
+C:\Users\Dell\Desktop\VideoRentalStoreSystem-master\VideoRentalStoreSystem\VideoRentalStoreSystem.Test\bin\Debug\VideoRentalStoreSystem.BLL.dll
+C:\Users\Dell\Desktop\VideoRentalStoreSystem-master\VideoRentalStoreSystem\VideoRentalStoreSystem.Test\bin\Debug\VideoRentalStoreSystem.DAL.dll
+C:\Users\Dell\Desktop\VideoRentalStoreSystem-master\VideoRentalStoreSystem\VideoRentalStoreSystem.Test\bin\Debug\EntityFramework.dll
+C:\Users\Dell\Desktop\VideoRentalStoreSystem-master\VideoRentalStoreSystem\VideoRentalStoreSystem.Test\bin\Debug\VideoRentalStoreSystem.BLL.pdb
+C:\Users\Dell\Desktop\VideoRentalStoreSystem-master\VideoRentalStoreSystem\VideoRentalStoreSystem.Test\bin\Debug\VideoRentalStoreSystem.DAL.pdb
+C:\Users\Dell\Desktop\VideoRentalStoreSystem-master\VideoRentalStoreSystem\VideoRentalStoreSystem.Test\bin\Debug\VideoRentalStoreSystem.DAL.dll.config
+C:\Users\Dell\Desktop\VideoRentalStoreSystem-master\VideoRentalStoreSystem\VideoRentalStoreSystem.Test\bin\Debug\EntityFramework.xml
+C:\Users\Dell\Desktop\VideoRentalStoreSystem-master\VideoRentalStoreSystem\VideoRentalStoreSystem.Test\obj\Debug\VideoRentalStoreSystem.Test.csprojResolveAssemblyReference.cache
+C:\Users\Dell\Desktop\VideoRentalStoreSystem-master\VideoRentalStoreSystem\VideoRentalStoreSystem.Test\obj\Debug\VideoRentalStoreSystem.Test.csproj.CoreCompileInputs.cache
+C:\Users\Dell\Desktop\VideoRentalStoreSystem-master\VideoRentalStoreSystem\VideoRentalStoreSystem.Test\obj\Debug\VideoRentalStoreSystem.Test.dll
+C:\Users\Dell\Desktop\VideoRentalStoreSystem-master\VideoRentalStoreSystem\VideoRentalStoreSystem.Test\obj\Debug\VideoRentalStoreSystem.Test.pdb
