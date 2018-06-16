@@ -489,6 +489,7 @@ namespace VideoRentalStoreSystem.UI
         private void LoadTabManageTitle()
         {
             cboManageTitleTypeTitle.ItemsSource = typeDiskRepository.GetAll().Select(x => x.TypeName).ToList();
+            cboManageTitleCostTypeTitle.ItemsSource = typeDiskRepository.GetAll().Select(x => x.TypeName).ToList();
             LoadListTypeManageTitle();
         }
         private void LoadListTypeManageTitle()
@@ -544,6 +545,27 @@ namespace VideoRentalStoreSystem.UI
                 catch (Exception)
                 {
                     MessageBox.Show(VRSSMessage.MessageNum27,"Thông báo",MessageBoxButton.OK,MessageBoxImage.Information);
+                    return;
+                }
+            }
+        }
+        private void btnManageTitleUpdateCostTitle_Click(object sender, RoutedEventArgs e)
+        {
+            if (ValidateInputManageTitle())
+            {
+                TitleDisk title = new TitleDisk();
+                title.Title = txtManageTitleTitleName.Text.Trim();
+                title.TypeName = cboManageTitleTypeTitle.Text.Trim();
+                ManageTitle manageTitle = new ManageTitle();
+                try
+                {
+                    manageTitle.AddTitle(title);
+                    txtManageTitleTitleName.Clear();
+                    LoadTabManageTitle();
+                }
+                catch (Exception)
+                {
+                    MessageBox.Show(VRSSMessage.MessageNum27, "Thông báo", MessageBoxButton.OK, MessageBoxImage.Information);
                     return;
                 }
             }
@@ -703,8 +725,10 @@ namespace VideoRentalStoreSystem.UI
             btnManageTitleAddTitle.IsEnabled = value;
             btnTabItemReports.IsEnabled = value;
             btnTabItemManageInventory.IsEnabled = value;
+            btnManageCustomerDeleteCustomer.IsEnabled = value;
             btnLogin.IsEnabled = !value;
             btnLogout.IsEnabled = value;
+            btnManageTitleUpdateCostTitle.IsEnabled = value;
             if (!value)
                 if (indexTab != 0)
                 {

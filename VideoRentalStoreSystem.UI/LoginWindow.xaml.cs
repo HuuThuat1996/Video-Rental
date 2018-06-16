@@ -55,25 +55,11 @@ namespace VideoRentalStoreSystem.UI
         {
             if (SecurityService.IsLogin())
             {
-                MainWindow main = new MainWindow();
-                if(SecurityService.getPosition() == admin)
-                {
-                    if(isOpen != 0)
-                    {
-                        mainWindow.checkLogin(1);
-                    }
-                    else
-                    {
-                        main.Show();
-                        main.CheckLogin(1);
-                        isOpen++;
-                    }
-                  
-                }
+                mainWindow.checkLogin(1);
             }
             else if (SecurityService.IsBlock())
                 mainWindow.checkLogin(-1);
-            else if(SecurityService.getPosition()== employee)
+            else
             {
                 mainWindow.checkLogin(0);
             }

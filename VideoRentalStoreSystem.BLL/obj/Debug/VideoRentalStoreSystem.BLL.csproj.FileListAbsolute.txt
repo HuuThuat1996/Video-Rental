@@ -21,3 +21,15 @@ C:\Users\DELL\Desktop\Nhom2_Project\VideoRentalStoreSystem-master\VideoRentalSto
 C:\Users\DELL\Desktop\Nhom2_Project\VideoRentalStoreSystem-master\VideoRentalStoreSystem\VideoRentalStoreSystem.BLL\obj\Debug\VideoRentalStoreSystem.BLL.csproj.CopyComplete
 C:\Users\DELL\Desktop\Nhom2_Project\VideoRentalStoreSystem-master\VideoRentalStoreSystem\VideoRentalStoreSystem.BLL\obj\Debug\VideoRentalStoreSystem.BLL.dll
 C:\Users\DELL\Desktop\Nhom2_Project\VideoRentalStoreSystem-master\VideoRentalStoreSystem\VideoRentalStoreSystem.BLL\obj\Debug\VideoRentalStoreSystem.BLL.pdb
+D:\Git_Local\Video-Rental\VideoRentalStoreSystem.BLL\bin\Debug\VideoRentalStoreSystem.BLL.dll
+D:\Git_Local\Video-Rental\VideoRentalStoreSystem.BLL\bin\Debug\VideoRentalStoreSystem.BLL.pdb
+D:\Git_Local\Video-Rental\VideoRentalStoreSystem.BLL\bin\Debug\VideoRentalStoreSystem.DAL.dll
+D:\Git_Local\Video-Rental\VideoRentalStoreSystem.BLL\bin\Debug\EntityFramework.dll
+D:\Git_Local\Video-Rental\VideoRentalStoreSystem.BLL\bin\Debug\VideoRentalStoreSystem.DAL.pdb
+D:\Git_Local\Video-Rental\VideoRentalStoreSystem.BLL\bin\Debug\VideoRentalStoreSystem.DAL.dll.config
+D:\Git_Local\Video-Rental\VideoRentalStoreSystem.BLL\bin\Debug\EntityFramework.xml
+D:\Git_Local\Video-Rental\VideoRentalStoreSystem.BLL\obj\Debug\VideoRentalStoreSystem.BLL.csprojAssemblyReference.cache
+D:\Git_Local\Video-Rental\VideoRentalStoreSystem.BLL\obj\Debug\VideoRentalStoreSystem.BLL.csproj.CoreCompileInputs.cache
+D:\Git_Local\Video-Rental\VideoRentalStoreSystem.BLL\obj\Debug\VideoRentalStoreSystem.BLL.csproj.CopyComplete
+D:\Git_Local\Video-Rental\VideoRentalStoreSystem.BLL\obj\Debug\VideoRentalStoreSystem.BLL.dll
+D:\Git_Local\Video-Rental\VideoRentalStoreSystem.BLL\obj\Debug\VideoRentalStoreSystem.BLL.pdb

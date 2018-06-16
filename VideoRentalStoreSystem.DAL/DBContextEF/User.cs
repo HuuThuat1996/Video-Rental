@@ -16,6 +16,5 @@ namespace VideoRentalStoreSystem.DAL.DBContextEF
         [Required]
         [StringLength(50)]
         public string Password { get; set; }
-        public string position { get; set; }
     }
 }

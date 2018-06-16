@@ -59,7 +59,7 @@
         </StackPanel>
         <StackPanel Canvas.ZIndex="0" Margin="0,20,0,0">
             <TabControl x:Name="tabControl"  Padding="0" Canvas.ZIndex="0" Margin="0" BorderBrush="{x:Null}">
-                <!--*******************************************************-->
+                <!--*******************************Item Rental************************-->
                 <TabItem x:Name="tabItemRental" Background="{DynamicResource {x:Static SystemColors.ControlLightLightBrushKey}}" IsSelected="True" Margin="0" Padding="0" >
                     <Grid Margin="0" ScrollViewer.CanContentScroll="True">
                         <Grid.RowDefinitions>
@@ -75,10 +75,10 @@
                             </Grid.ColumnDefinitions>
                             <!-- Area left -->
                             <StackPanel Grid.Column="0" Orientation="Vertical" Margin="30,0,30,0">
-                                <GroupBox Header="Danh sách ID khách hàng" Height="200">
+                                <GroupBox Header="Danh sách mã khách hàng" Height="200">
                                     <StackPanel Orientation="Vertical">
                                         <StackPanel Orientation="Horizontal" Margin="0,10,0,0">
-                                            <Label Content="Tìm id khách hàng" Padding="0" Margin="0,0,10,0"/>
+                                            <Label Content="Tìm mã khách hàng" Padding="0" Margin="0,0,10,0"/>
                                             <TextBox Name="tbxFindRentalCusId" Width="120" TextChanged="tbxFindRentalCusId_TextChanged" Tag="1"/>
                                         </StackPanel>
                                         <ListBox Name="lbxRentalResultCusId" Margin="0,10,0,0" Height="135" SelectionChanged="lbxRentalResultCusId_SelectionChanged" SelectionMode="Single" BorderBrush="{x:Null}" Tag="2">
@@ -94,8 +94,8 @@
                                     <!-- Title -->
                                     <StackPanel Orientation="Vertical">
                                         <StackPanel Orientation="Horizontal">
-                                            <Label>ID:</Label>
-                                            <Label Name="lblRentalIdCus" Foreground="#FF0007FF">ID</Label>
+                                            <Label>Mã:</Label>
+                                            <Label Name="lblRentalIdCus" Foreground="#FF0007FF">Mã</Label>
                                         </StackPanel>
                                         <StackPanel Orientation="Horizontal">
                                             <Label>Họ tên:</Label>
@@ -118,10 +118,10 @@
                             </StackPanel>
                             <!-- Area mid-left -->
                             <StackPanel Grid.Column="1" Margin="0,0,10,0">
-                                <GroupBox Header="Danh sách ID đĩa">
+                                <GroupBox Header="Danh sách mã đĩa">
                                     <StackPanel>
                                         <StackPanel Orientation="Horizontal" Margin="0,10,0,0">
-                                            <Label Content="Tìm id đĩa" Padding="0" Margin="0,0,10,0"/>
+                                            <Label Content="Tìm mã đĩa" Padding="0" Margin="0,0,10,0"/>
                                             <TextBox Name="tbxFindRentalDiskId" Width="90" TextChanged="tbxFindRentalDiskId_TextChanged" Tag="3"/>
                                         </StackPanel>
                                         <ListBox Name="lbxRentalResultDiskId" Height="400" Margin="0,10,0,0" SelectionMode="Multiple" ItemsSource="{Binding lstDiskCurrent}" BorderBrush="{x:Null}" Tag="4">
@@ -157,7 +157,7 @@
                                                             </DataTemplate>
                                                         </GridViewColumn.CellTemplate>
                                                     </GridViewColumn>
-                                                    <GridViewColumn Header="ID đĩa" Width="100" DisplayMemberBinding="{Binding DiskID}"></GridViewColumn>
+                                                    <GridViewColumn Header="Mã đĩa" Width="100" DisplayMemberBinding="{Binding DiskID}"></GridViewColumn>
                                                     <GridViewColumn Header="Ngày trả" Width="200" DisplayMemberBinding="{Binding  DateReturn, StringFormat='dd-MM-yyyy'}"></GridViewColumn>
                                                     <GridViewColumn Header="Giá thuê (VNĐ)" Width="200" DisplayMemberBinding="{Binding  PriceRental}"></GridViewColumn>
                                                 </GridView>
@@ -167,7 +167,7 @@
                                             <Button Name="btnRentalCalculation" Content="Tính tiền" Width="100" Height="25" HorizontalAlignment="Left" Margin="5,0,0,0" Click="btnRentalCalculation_Click" Background="{x:Null}" IsDefault="True" Tag="8"/>
                                             <Button Name="btnRentalNew" Content="Thuê mới" Width="100" Height="25" HorizontalAlignment="Left" Margin="5,0,0,0" Click="btnRentalNew_Click" Background="{x:Null}" Tag="9"/>
                                             <Label HorizontalAlignment="Left" Margin="300,0,0,0">Tổng số tiền phải trả:</Label>
-                                            <Label Name="lblRentalTotal" Content="0 (VND)" Margin="10,0,0,0" Foreground="#FFD40A0A"></Label>
+                                            <Label Name="lblRentalTotal" Content="0 (VNĐ)" Margin="10,0,0,0" Foreground="#FFD40A0A"></Label>
                                         </StackPanel>
                                     </StackPanel>
                                 </GroupBox>
@@ -175,7 +175,7 @@
                         </Grid>
                     </Grid>
                 </TabItem>
-                <!--*******************************************************-->
+                <!--**********************************Item Return Disk*********************-->
                 <TabItem Name="tabItemReturnDisk" Background="{DynamicResource {x:Static SystemColors.ControlLightLightBrushKey}}" Padding="0" Margin="0">
                     <Grid Margin="0">
                         <Grid.RowDefinitions>
@@ -185,7 +185,7 @@
                         <Grid Grid.Row="1">
                             <StackPanel Margin="30,0,0,0" Width="400">
                                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
-                                    <Label Content="Tìm id đĩa"/>
+                                    <Label Content="Tìm mã đĩa"/>
                                     <TextBox Name="tbxReturnSearchDiskID" Width="100" Margin="10,0,0,0" VerticalAlignment="Center" TextChanged="tbxReturnSearchDiskID_TextChanged" Tag="1"/>
                                 </StackPanel>
                                 <ListBox Name="lbxReturnResultSearch" SelectionMode="Single" Margin="0,10,0,0" Height="100" Tag="2">
@@ -203,7 +203,7 @@
                         </Grid>
                     </Grid>
                 </TabItem>
-                <!--*******************************************************-->
+                <!--********************************Item View Info Disk***********************-->
                 <TabItem Name="tabItemViewInfoDisk" Background="{DynamicResource {x:Static SystemColors.ControlLightLightBrushKey}}" Padding="0" Margin="0">
                     <Grid Margin="0">
                         <Grid.RowDefinitions>
@@ -240,7 +240,7 @@
                                     <ListView x:Name="lvwViewInfoDiskListDisk" Height="437" Tag="3">
                                         <ListView.View>
                                             <GridView>
-                                                <GridViewColumn Header="ID đĩa" Width="100" DisplayMemberBinding="{Binding DiskID}"></GridViewColumn>
+                                                <GridViewColumn Header="Mã đĩa" Width="100" DisplayMemberBinding="{Binding DiskID}"></GridViewColumn>
                                                 <GridViewColumn Header="Trạng thái" Width="120" DisplayMemberBinding="{Binding Status}"></GridViewColumn>
                                                 <GridViewColumn Header="Tên khách hàng" Width="300" DisplayMemberBinding="{Binding CustomerName }"></GridViewColumn>
                                                 <GridViewColumn Header="Ngày trả" Width="150" DisplayMemberBinding="{Binding  DateReturn}"></GridViewColumn>
@@ -253,7 +253,7 @@
                         </Grid>
                     </Grid>
                 </TabItem>
-                <!--*******************************************************-->
+                <!--**********************************Item Manage Customer*********************-->
                 <TabItem Name="tabItemManageCustomer" Background="{DynamicResource {x:Static SystemColors.ControlLightLightBrushKey}}" Padding="0" Margin="0">
                     <Grid Margin="0">
                         <Grid.RowDefinitions>
@@ -288,21 +288,26 @@
                                 </GroupBox>
                             </StackPanel>
                             <GroupBox Grid.Column="1" Header="Danh sách khách hàng" Margin="30,0,0,100" Padding="0,10,0,0" HorizontalAlignment="Left">
+                                <StackPanel Orientation="Vertical">
                                 <ListView Name="lvwManageCustomerListCustomer" Width="850" Height="500" Padding="0" Margin="0" Tag="5">
                                     <ListView.View>
                                         <GridView>
-                                            <GridViewColumn Header="ID" Width="100" DisplayMemberBinding="{Binding CustomerID}"></GridViewColumn>
+                                            <GridViewColumn Header="Mã" Width="100" DisplayMemberBinding="{Binding CustomerID}"></GridViewColumn>
                                             <GridViewColumn Header="Tên khách hàng" Width="200" DisplayMemberBinding="{Binding  Name}"></GridViewColumn>
                                             <GridViewColumn Header="Địa chỉ" Width="300" DisplayMemberBinding="{Binding  Address}"></GridViewColumn>
                                             <GridViewColumn Header="Số điện thoại" Width="200" DisplayMemberBinding="{Binding  PhoneNumber}"></GridViewColumn>
                                         </GridView>
                                     </ListView.View>
                                 </ListView>
+                                <StackPanel Orientation="Horizontal" Margin="0,10,710,10" HorizontalAlignment="Right" Width="136">
+                                    <Button x:Name="btnManageCustomerDeleteCustomer" Width="136" Height="24" Content="Xóa khách hàng"  Click="btnManageCustomerAddCustomer_Click" IsDefault="True" Tag="4" Background="{x:Null}"/>
+                                </StackPanel>
+                                </StackPanel>
                             </GroupBox>
                         </Grid>
                     </Grid>
                 </TabItem>
-                <!--*******************************************************-->
+                <!--**********************Item Manage Title Disk*********************************-->
                 <TabItem Name="tabItemManageTitleDisk" Background="{DynamicResource {x:Static SystemColors.ControlLightLightBrushKey}}" Padding="0" Margin="0">
                     <Grid Margin="0">
                         <Grid.RowDefinitions>
@@ -329,6 +334,23 @@
                                         </StackPanel>
                                         <StackPanel Orientation="Horizontal" Margin="0,10,110,0" HorizontalAlignment="Right" Height="24" Width="137">
                                             <Button Name="btnManageTitleAddTitle" Width="137" Height="25" Click="btnManageTitleAddTitle_Click" Background="{x:Null}" Content="Thêm tựa đề" Tag="3" IsDefault="True" Margin="0,0,0,-1">
+                                            </Button>
+                                        </StackPanel>
+                                    </StackPanel>
+                                </GroupBox>
+                                <GroupBox Margin="0,10,0,0" Header="Quản lý giá thuê tựa đề">
+                                    <StackPanel Orientation="Vertical">
+                                        <StackPanel Orientation="Horizontal" Margin="0,10,0,10">
+                                            <Label Content="Giá thuê" Width="100" Margin="0,0,10,0"/>
+                                            <TextBox x:Name="txtManageTitleCostTitleName" Width="200" VerticalAlignment="Center" Tag="1"></TextBox>
+                                        </StackPanel>
+                                        <StackPanel Orientation="Horizontal" Margin="0,0,0,10">
+                                            <Label Content="Loại" Width="100" Margin="0,0,10,0"/>
+                                            <ComboBox x:Name="cboManageTitleCostTypeTitle" Width="200" VerticalAlignment="Center" SelectedIndex="0" Tag="2">
+                                            </ComboBox>
+                                        </StackPanel>
+                                        <StackPanel Orientation="Horizontal" Margin="0,10,100,0" HorizontalAlignment="Right" Height="24" Width="150">
+                                            <Button Name="btnManageTitleUpdateCostTitle" Width="150" Height="25" Click="btnManageTitleUpdateCostTitle_Click" Background="{x:Null}" Content="Cập nhật giá thuê tựa đề" Tag="3" IsDefault="True" Margin="0,0,0,-1">
                                             </Button>
                                         </StackPanel>
                                     </StackPanel>
@@ -391,7 +413,7 @@
                                     <ListView x:Name="lvwManageInventoryListIdDiskOfTitle" Width="500" Height="410" Margin="0,20,0,0" Tag="5">
                                         <ListView.View>
                                             <GridView>
-                                                <GridViewColumn Header="ID đĩa" Width="100" DisplayMemberBinding="{Binding DiskID}"></GridViewColumn>
+                                                <GridViewColumn Header="Mã đĩa" Width="100" DisplayMemberBinding="{Binding DiskID}"></GridViewColumn>
                                                 <GridViewColumn Header="Trạng thái" Width="200" DisplayMemberBinding="{Binding  Status}"></GridViewColumn>
                                             </GridView>
                                         </ListView.View>
@@ -402,7 +424,7 @@
                         </Grid>
                     </Grid>
                 </TabItem>
-                <!--*******************************************************-->
+                <!--********************************Item Reports***********************-->
                 <TabItem Name="tabItemReports" Background="{DynamicResource {x:Static SystemColors.ControlLightLightBrushKey}}" Padding="0" Margin="0">
                     <StackPanel>
                         <TabControl Margin="0,10,0,0">

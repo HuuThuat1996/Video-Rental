@@ -20,3 +20,15 @@ C:\Users\DELL\Desktop\Nhom2_Project\VideoRentalStoreSystem-master\VideoRentalSto
 C:\Users\DELL\Desktop\Nhom2_Project\VideoRentalStoreSystem-master\VideoRentalStoreSystem\VideoRentalStoreSystem.DAL\obj\Debug\VideoRentalStoreSystem.DAL.csproj.CopyComplete
 C:\Users\DELL\Desktop\Nhom2_Project\VideoRentalStoreSystem-master\VideoRentalStoreSystem\VideoRentalStoreSystem.DAL\obj\Debug\VideoRentalStoreSystem.DAL.dll
 C:\Users\DELL\Desktop\Nhom2_Project\VideoRentalStoreSystem-master\VideoRentalStoreSystem\VideoRentalStoreSystem.DAL\obj\Debug\VideoRentalStoreSystem.DAL.pdb
+D:\Git_Local\Video-Rental\VideoRentalStoreSystem.DAL\bin\Debug\VideoRentalStoreSystem.DAL.dll.config
+D:\Git_Local\Video-Rental\VideoRentalStoreSystem.DAL\bin\Debug\VideoRentalStoreSystem.DAL.dll
+D:\Git_Local\Video-Rental\VideoRentalStoreSystem.DAL\bin\Debug\VideoRentalStoreSystem.DAL.pdb
+D:\Git_Local\Video-Rental\VideoRentalStoreSystem.DAL\bin\Debug\EntityFramework.dll
+D:\Git_Local\Video-Rental\VideoRentalStoreSystem.DAL\bin\Debug\EntityFramework.SqlServer.dll
+D:\Git_Local\Video-Rental\VideoRentalStoreSystem.DAL\bin\Debug\EntityFramework.xml
+D:\Git_Local\Video-Rental\VideoRentalStoreSystem.DAL\bin\Debug\EntityFramework.SqlServer.xml
+D:\Git_Local\Video-Rental\VideoRentalStoreSystem.DAL\obj\Debug\VideoRentalStoreSystem.DAL.csprojAssemblyReference.cache
+D:\Git_Local\Video-Rental\VideoRentalStoreSystem.DAL\obj\Debug\VideoRentalStoreSystem.DAL.csproj.CoreCompileInputs.cache
+D:\Git_Local\Video-Rental\VideoRentalStoreSystem.DAL\obj\Debug\VideoRentalStoreSystem.DAL.csproj.CopyComplete
+D:\Git_Local\Video-Rental\VideoRentalStoreSystem.DAL\obj\Debug\VideoRentalStoreSystem.DAL.dll
+D:\Git_Local\Video-Rental\VideoRentalStoreSystem.DAL\obj\Debug\VideoRentalStoreSystem.DAL.pdb

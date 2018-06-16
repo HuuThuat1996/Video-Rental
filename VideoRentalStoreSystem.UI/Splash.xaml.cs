@@ -58,10 +58,8 @@ namespace VideoRentalStoreSystem.UI
             {
                 MessageBox.Show(VRSSMessage.MessageNum26);
             }
-            LoginWindow login = new LoginWindow();
-            login.Show();
-            //MainWindow mainWindow = new MainWindow();
-            //mainWindow.Show();
+            MainWindow mainWindow = new MainWindow();
+            mainWindow.Show();
             this.Close();
         }
     }

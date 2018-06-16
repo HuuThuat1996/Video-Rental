@@ -11,7 +11,6 @@ namespace VideoRentalStoreSystem.BLL
         private static bool isLogin = false;
         private static bool isBlock = false;
         private static int countLoginTimes = 1;
-        private static string position = "";
         private static UserRepository userRepository = new UserRepository(new DBVRContext());
 
         public static void Login(string userName, string password)
@@ -25,14 +24,10 @@ namespace VideoRentalStoreSystem.BLL
             if(user != null)
             {
                 isLogin = true;
-                position = user.position;
             }
             countLoginTimes++;
         }
-        public static string getPosition()
-        {
-            return position;
-        }
+    
         public static void Logout()
         {
             isLogin = false;
