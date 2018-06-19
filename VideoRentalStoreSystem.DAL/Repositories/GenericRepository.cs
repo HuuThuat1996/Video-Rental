@@ -7,7 +7,7 @@ namespace VideoRentalStoreSystem.DAL.Repositories
 {
     public abstract class GenericRepository<TContext, TEntity> : IGenericRepository<TEntity> where TEntity : class where TContext : DbContext
     {
-        public TContext _context { get; private set; }
+        public TContext _context { get; set; }
         protected IDbSet<TEntity> entities;
 
         protected GenericRepository(TContext context)
@@ -46,7 +46,7 @@ namespace VideoRentalStoreSystem.DAL.Repositories
 
         public IQueryable<TEntity> GetAll()
         {
-            return entities;
+            return entities = _context.Set<TEntity>();
         }
     }
 }

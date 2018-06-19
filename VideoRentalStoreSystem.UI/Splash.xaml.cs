@@ -47,7 +47,7 @@ namespace VideoRentalStoreSystem.UI
                 {
                     if (!context.Database.Exists())
                     {
-                        MessageBoxResult result = MessageBox.Show(VRSSMessage.MessageNum25,
+                        MessageBoxResult result = MessageBox.Show(VRSSMessage.NotFoundDB,
                             "", MessageBoxButton.OK, MessageBoxImage.Information);
                         context.Database.Create();
                         context.Database.Connection.Open();
@@ -56,7 +56,7 @@ namespace VideoRentalStoreSystem.UI
             }
             catch (Exception)
             {
-                MessageBox.Show(VRSSMessage.MessageNum26);
+                MessageBox.Show(VRSSMessage.CanNotConnectDB);
             }
             MainWindow mainWindow = new MainWindow();
             mainWindow.Show();

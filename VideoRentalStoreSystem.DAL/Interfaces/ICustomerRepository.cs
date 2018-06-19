@@ -4,6 +4,7 @@ namespace VideoRentalStoreSystem.DAL.Interfaces
 {
     public interface ICustomerRepository<T> where T:class
     {
-        IQueryable<T> Find(string value);
+        IQueryable<T> FindCustomerID(string value);
+        IQueryable<T> FindCustomerName(string value);
     }
 }

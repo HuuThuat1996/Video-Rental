@@ -43,7 +43,7 @@ namespace VideoRentalStoreSystem.UI
             SecurityService.Login(tbxUserName.Text, pbx.Password);
             if (!SecurityService.IsLogin() && !SecurityService.IsBlock())
             {
-                MessageBox.Show(VRSSMessage.MessageNum23);
+                MessageBox.Show(VRSSMessage.ErrorLogin);
                 tbxUserName.Focus();
                 tbxUserName.SelectAll();
                 return;

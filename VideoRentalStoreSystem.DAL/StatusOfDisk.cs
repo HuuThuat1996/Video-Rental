@@ -5,5 +5,6 @@
         public static string ON_SHELF = "Trên kệ";
         public static string RENTED = "Đã thuê";
         public static string ON_HOLD = "Giữ lại";
+        public static string DELETE = "Đã xóa";
     }
 }

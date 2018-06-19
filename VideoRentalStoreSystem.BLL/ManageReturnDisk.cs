@@ -26,7 +26,7 @@ namespace VideoRentalStoreSystem.BLL
         /// error return 1
         /// exception return 2
         /// </returns>
-        public int ReturnDisk(Disk disk)
+        public int ReturnDisk(Disk disk, DateTime dateReturn)
         {
             if (disk != null)
             {
@@ -34,7 +34,7 @@ namespace VideoRentalStoreSystem.BLL
                 RentalRecordDetail detailLatest = detailRepository.GetLatest(disk.DiskID);
                 if (detailLatest != null)
                 {
-                    if (DateTime.Now.Date > detailLatest.DateReturn.Date)
+                    if (dateReturn > detailLatest.DateReturn.Date)
                     {
                         int result = addLateCharge.Add(disk.DiskID);
                         if (result >= 0)
@@ -52,7 +52,7 @@ namespace VideoRentalStoreSystem.BLL
                         {
                             try
                             {
-                                detailLatest.DateReturnActual = DateTime.Now;
+                                detailLatest.DateReturnActual = dateReturn;
                                 detailRepository.Update(detailLatest);
                                 diskRepository.ModifyStatus(disk, StatusOfDisk.ON_SHELF);
                                 transaction.Complete();

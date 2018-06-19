@@ -1,4 +1,5 @@
-﻿using VideoRentalStoreSystem.DAL.DBContextEF;
+﻿using System.Linq;
+using VideoRentalStoreSystem.DAL.DBContextEF;
 using VideoRentalStoreSystem.DAL.Interfaces;
 
 namespace VideoRentalStoreSystem.DAL.Repositories
@@ -8,5 +9,22 @@ namespace VideoRentalStoreSystem.DAL.Repositories
         public TypeDiskRepository(DBVRContext context) : base(context)
         {
         }
+        public bool Update(TypeDisk typeDisk)
+        {
+            if (typeDisk != null)
+            {
+                TypeDisk update =
+                       _context.TypeDisks.Where(x => x.TypeName == typeDisk.TypeName).FirstOrDefault();
+                update.Cost = typeDisk.Cost;
+                update.Period = typeDisk.Period;
+                update.LateCharge = typeDisk.LateCharge;
+                _context.SaveChanges();
+                return true;
+            }
+
+            return false;
+        }
+      
+
     }
 }

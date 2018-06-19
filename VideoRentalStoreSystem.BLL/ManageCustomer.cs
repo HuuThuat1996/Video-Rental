@@ -1,6 +1,6 @@
-﻿using VideoRentalStoreSystem.DAL.DBContextEF;
+﻿using System.Collections.Generic;
+using VideoRentalStoreSystem.DAL.DBContextEF;
 using VideoRentalStoreSystem.DAL.Repositories;
-
 namespace VideoRentalStoreSystem.BLL
 {
     public class ManageCustomer
@@ -16,5 +16,29 @@ namespace VideoRentalStoreSystem.BLL
         {
             customerRepository.Insert(customer);
         }
+        public string isDelete(int customerID)
+        {
+            List<string> list = new List<string>();
+            string alert = "";
+            list = customerRepository.IsDelete(customerID);
+            if (list.Count != 0)
+            {
+                foreach (string text in list)
+                {
+                    alert += " "+text;
+                }
+            }
+            return alert;
+        }
+        public void DeleteCustomer(int customerID)
+        {
+            customerRepository.DeleteCustomer(customerID);
+        }
+
+        public void GetInformationLateCharge(int DiskID)
+        {
+            customerRepository.GetCustomerByDiskLateCharge(DiskID);
+        }
     }
+
 }

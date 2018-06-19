@@ -161,7 +161,7 @@ namespace VideoRentalStoreSystem.UI
             lbxRentalResultCusId.ItemsSource = null;
             lbxRentalResultDiskId.ItemsSource = null;
 
-            lbxRentalResultCusId.ItemsSource = customerRepository.GetAll().ToList();
+            lbxRentalResultCusId.ItemsSource = customerRepository.GetCustomers().ToList();
             lstDiskCurrent = diskRepository.Get(StatusOfDisk.ON_SHELF).ToList();
             lbxRentalResultDiskId.ItemsSource = lstDiskCurrent;
 
@@ -175,7 +175,7 @@ namespace VideoRentalStoreSystem.UI
         private void tbxFindRentalCusId_TextChanged(object sender, TextChangedEventArgs e)
         {
             lbxRentalResultDiskId.ItemsSource = null;
-            lbxRentalResultCusId.ItemsSource = customerRepository.Find(tbxFindRentalCusId.Text.Trim()).ToList();
+            lbxRentalResultCusId.ItemsSource = customerRepository.FindCustomerID(tbxFindRentalCusId.Text.Trim()).ToList();
         }
         private void lbxRentalResultCusId_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
@@ -235,7 +235,7 @@ namespace VideoRentalStoreSystem.UI
             }
             else
             {
-                MessageBox.Show(VRSSMessage.MessageNum01);
+                MessageBox.Show(VRSSMessage.NotChooseDiskRent);
             }
         }
         private void btnRemoveDisk_Click(object sender, RoutedEventArgs e)
@@ -265,7 +265,7 @@ namespace VideoRentalStoreSystem.UI
             }
             else
             {
-                MessageBox.Show(VRSSMessage.MessageNum02);
+                MessageBox.Show(VRSSMessage.NotChooseDiskRemove);
             }
         }
         private void btnRentalCalculation_Click(object sender, RoutedEventArgs e)
@@ -274,7 +274,7 @@ namespace VideoRentalStoreSystem.UI
             if (string.IsNullOrEmpty(lblRentalIdCus.Content.ToString()) || !int.TryParse(lblRentalIdCus.Content.ToString(), out customerId))
             {
                 customerId = 0;
-                MessageBox.Show(VRSSMessage.MessageNum03, "Thông báo", MessageBoxButton.OK, MessageBoxImage.Information);
+                MessageBox.Show(VRSSMessage.NotChooseCustomerRent, "Thông báo", MessageBoxButton.OK, MessageBoxImage.Information);
                 return;
             }
             if (lstDiskChoosed.Count > 0)
@@ -282,24 +282,24 @@ namespace VideoRentalStoreSystem.UI
                 RentalRecord rentalRecord = manageRentalRecord.Initialize(customerId, lstDiskChoosed);
                 if (rentalRecord == null)
                 {
-                    MessageBox.Show(VRSSMessage.MessageNum04, "Thông báo", MessageBoxButton.OK, MessageBoxImage.Information);
+                    MessageBox.Show(VRSSMessage.ErrorCreateRecord, "Thông báo", MessageBoxButton.OK, MessageBoxImage.Information);
                     return;
                 }
                 if (manageRentalRecord.AddRentalRecord(rentalRecord))
                 {
-                    MessageBox.Show(VRSSMessage.MessageNum05, "", MessageBoxButton.OK, MessageBoxImage.Information);
+                    MessageBox.Show(VRSSMessage.SavedInformation, "", MessageBoxButton.OK, MessageBoxImage.Information);
                     LoadTabRental();
                     return;
                 }
                 else
                 {
-                    MessageBox.Show(VRSSMessage.MessageNum04, "Thông báo", MessageBoxButton.OK, MessageBoxImage.Information);
+                    MessageBox.Show(VRSSMessage.ErrorCreateRecord, "Thông báo", MessageBoxButton.OK, MessageBoxImage.Information);
                     return;
                 }
             }
             else
             {
-                MessageBox.Show(VRSSMessage.MessageNum06, "Thông báo", MessageBoxButton.OK, MessageBoxImage.Information);
+                MessageBox.Show(VRSSMessage.NoDiskInListRent, "Thông báo", MessageBoxButton.OK, MessageBoxImage.Information);
                 return;
             }
         }
@@ -316,6 +316,7 @@ namespace VideoRentalStoreSystem.UI
             lstDiskIdReturn = new List<Disk>();
             lbxReturnResultSearch.ItemsSource = null;
             lbxReturnResultSearch.ItemsSource = diskRepository.Get(StatusOfDisk.RENTED).ToList();
+            dtpReturnDiskDateActualReturn.SelectedDate = DateTime.Now;
         }
         private void tbxReturnSearchDiskID_TextChanged(object sender, TextChangedEventArgs e)
         {
@@ -330,19 +331,21 @@ namespace VideoRentalStoreSystem.UI
                 if (lbxReturnResultSearch.SelectedItem is Disk)
                 {
                     Disk disk = (Disk)lbxReturnResultSearch.SelectedItem;
-                    int result = manageReturnRepository.ReturnDisk(disk);
+                    int result = manageReturnRepository.ReturnDisk(disk, dtpReturnDiskDateActualReturn.SelectedDate.Value);
                     if (result >= 0)
                     {
                         //return success
-
                         if (result == 0)
                         {
-                            MessageBox.Show(VRSSMessage.MessageNum07, "", MessageBoxButton.OK, MessageBoxImage.Information);
+                            MessageBox.Show(VRSSMessage.DiskReturnedSuccess, "Thông báo", MessageBoxButton.OK, MessageBoxImage.Information);
                             lblReturnDiskMessage.Content = "";
                         }
                         else
                         {
-                            MessageBox.Show(VRSSMessage.MessageNum22, "", MessageBoxButton.OK, MessageBoxImage.Information);
+                            if (MessageBox.Show(VRSSMessage.DiskReturnedSuccessAndLateCharge, "Thông báo", MessageBoxButton.OKCancel, MessageBoxImage.Information) == MessageBoxResult.OK)
+                            {
+
+                            }
                             lblReturnDiskMessage.Content = "Đĩa có mã số " + disk.DiskID + " trễ hạn trả.";
                         }
                         LoadTabReturnDisk();
@@ -351,7 +354,7 @@ namespace VideoRentalStoreSystem.UI
                     }
                     else
                     {
-                        MessageBox.Show(VRSSMessage.MessageNum08, "", MessageBoxButton.OK, MessageBoxImage.Information);
+                        MessageBox.Show(VRSSMessage.DiskReturnFail, "", MessageBoxButton.OK, MessageBoxImage.Information);
                         tbxReturnSearchDiskID.Focus();
                         tbxReturnSearchDiskID.SelectAll();
                         lblReturnDiskMessage.Content = "";
@@ -360,7 +363,7 @@ namespace VideoRentalStoreSystem.UI
             }
             else
             {
-                MessageBox.Show(VRSSMessage.MessageNum09, "", MessageBoxButton.OK, MessageBoxImage.Information);
+                MessageBox.Show(VRSSMessage.NotChooseDiskReturn, "", MessageBoxButton.OK, MessageBoxImage.Information);
                 return;
             }
         }
@@ -412,7 +415,7 @@ namespace VideoRentalStoreSystem.UI
         private void LoadTabManageCustomer()
         {
             lvwManageCustomerListCustomer.ItemsSource = null;
-            lvwManageCustomerListCustomer.ItemsSource = customerRepository.GetAll().ToList();
+            lvwManageCustomerListCustomer.ItemsSource = customerRepository.GetCustomers().ToList();
 
             txtManageCustomerCustomerAddress.Clear();
             txtManageCustomerCustomerName.Clear();
@@ -423,55 +426,55 @@ namespace VideoRentalStoreSystem.UI
         /// check parameters input in tab "Quản lý khách hàng"
         /// </summary>
         /// <returns></returns>
-        private bool ValidateInputManageCustomer()
+        private bool ValidateInputManageCustomer(TextBox Name, TextBox Address, TextBox PhoneNumber)
         {
-            if (string.IsNullOrEmpty(txtManageCustomerCustomerName.Text.Trim()))
+            if (string.IsNullOrEmpty(Name.Text.Trim()))
             {
-                MessageBox.Show(VRSSMessage.MessageNum10, "Thông báo", MessageBoxButton.OK, MessageBoxImage.Information);
-                txtManageCustomerCustomerName.Focus();
-                txtManageCustomerCustomerName.SelectAll();
+                MessageBox.Show(VRSSMessage.NameCustomerNotEmpty, "Thông báo", MessageBoxButton.OK, MessageBoxImage.Information);
+                Name.Focus();
+                Name.SelectAll();
                 return false;
             }
-            if (!IsChar(txtManageCustomerCustomerName.Text.Trim()))
+            if (!IsChar(Name.Text.Trim()))
             {
-                MessageBox.Show(VRSSMessage.MessageNum11, "Thông báo", MessageBoxButton.OK, MessageBoxImage.Information);
-                txtManageCustomerCustomerName.Focus();
-                txtManageCustomerCustomerName.SelectAll();
+                MessageBox.Show(VRSSMessage.CustomerNameIsString, "Thông báo", MessageBoxButton.OK, MessageBoxImage.Information);
+                Name.Focus();
+                Name.SelectAll();
                 return false;
             }
-            if (string.IsNullOrEmpty(txtManageCustomerCustomerAddress.Text.Trim()))
+            if (string.IsNullOrEmpty(Address.Text.Trim()))
             {
-                MessageBox.Show(VRSSMessage.MessageNum12, "Thông báo", MessageBoxButton.OK, MessageBoxImage.Information);
-                txtManageCustomerCustomerAddress.Focus();
-                txtManageCustomerCustomerAddress.SelectAll();
+                MessageBox.Show(VRSSMessage.AddressNotEmpty, "Thông báo", MessageBoxButton.OK, MessageBoxImage.Information);
+                Address.Focus();
+                Address.SelectAll();
                 return false;
             }
-            if (string.IsNullOrEmpty(txtManageCustomerPhone.Text.Trim()))
+            if (string.IsNullOrEmpty(Address.Text.Trim()))
             {
-                MessageBox.Show(VRSSMessage.MessageNum13, "Thông báo", MessageBoxButton.OK, MessageBoxImage.Information);
-                txtManageCustomerPhone.Focus();
-                txtManageCustomerPhone.SelectAll();
+                MessageBox.Show(VRSSMessage.PhoneNumberNotEmpty, "Thông báo", MessageBoxButton.OK, MessageBoxImage.Information);
+                Address.Focus();
+                Address.SelectAll();
                 return false;
             }
-            if (!IsNumber(txtManageCustomerPhone.Text.Trim()) || txtManageCustomerPhone.Text.Trim().Length < 10 || txtManageCustomerPhone.Text.Trim().Length > 11)
+            if (!IsNumber(PhoneNumber.Text.Trim()) || PhoneNumber.Text.Trim().Length < 10 || PhoneNumber.Text.Trim().Length > 11)
             {
-                MessageBox.Show(VRSSMessage.MessageNum14, "Thông báo", MessageBoxButton.OK, MessageBoxImage.Information);
-                txtManageCustomerPhone.Focus();
-                txtManageCustomerPhone.SelectAll();
+                MessageBox.Show(VRSSMessage.PhoneNumberLenght, "Thông báo", MessageBoxButton.OK, MessageBoxImage.Information);
+                PhoneNumber.Focus();
+                PhoneNumber.SelectAll();
                 return false;
             }
-            if (int.Parse(txtManageCustomerPhone.Text.Substring(0, 1)) != 0)
+            if (int.Parse(PhoneNumber.Text.Substring(0, 1)) != 0)
             {
-                MessageBox.Show(VRSSMessage.MessageNum15, "Thông báo", MessageBoxButton.OK, MessageBoxImage.Information);
-                txtManageCustomerPhone.Focus();
-                txtManageCustomerPhone.SelectAll();
+                MessageBox.Show(VRSSMessage.PhoneNumberBeginWith0, "Thông báo", MessageBoxButton.OK, MessageBoxImage.Information);
+                PhoneNumber.Focus();
+                PhoneNumber.SelectAll();
                 return false;
             }
             return true;
         }
         private void btnManageCustomerAddCustomer_Click(object sender, RoutedEventArgs e)
         {
-            if (ValidateInputManageCustomer())
+            if (ValidateInputManageCustomer(txtManageCustomerCustomerName, txtManageCustomerCustomerAddress, txtManageCustomerPhone))
             {
                 Customer customer = new Customer();
                 customer.Name = txtManageCustomerCustomerName.Text.Trim();
@@ -483,13 +486,95 @@ namespace VideoRentalStoreSystem.UI
                 LoadTabManageCustomer();
             }
         }
+        private void btnManageCustomerDeleteCustomer_Click(object sender, RoutedEventArgs e)
+        {
+            if (lvwManageCustomerListCustomer.SelectedIndex != -1)
+            {
+                Customer customer = new Customer();
+                customer = (Customer)lvwManageCustomerListCustomer.SelectedValue;
+                ManageCustomer manageCustomer = new ManageCustomer();
+                string alert = manageCustomer.isDelete(customer.CustomerID);
+                if (alert != "")
+                {
+                    if (MessageBox.Show(VRSSMessage.DeleteCustomerFail.Replace("<latecharge>", alert), "Thông báo", MessageBoxButton.OKCancel, MessageBoxImage.Information) == MessageBoxResult.OK)
+                    {
+                        manageCustomer.DeleteCustomer(customer.CustomerID);
+                        txtManageCustomerUpdateCustomerID.Clear();
+                        txtManageCustomerUpdateCustomerName.Clear();
+                        txtManageCustomerUpdateCustomerAddress.Clear();
+                        txtManageCustomerUpdatePhone.Clear();
+                        LoadTabManageCustomer();
+                    }
+                    return;
+
+                }
+                else
+                {
+                    manageCustomer.DeleteCustomer(customer.CustomerID);
+                    txtManageCustomerUpdateCustomerID.Clear();
+                    txtManageCustomerUpdateCustomerName.Clear();
+                    txtManageCustomerUpdateCustomerAddress.Clear();
+                    txtManageCustomerUpdatePhone.Clear();
+                    LoadTabManageCustomer();
+                }
+
+            }
+
+        }
+        private void lvwManageCustomerListCustomer_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (lvwManageCustomerListCustomer.SelectedIndex != -1)
+            {
+                Customer customer = new Customer();
+                customer = (Customer)lvwManageCustomerListCustomer.SelectedValue;
+                txtManageCustomerUpdateCustomerID.Text = customer.CustomerID.ToString();
+                txtManageCustomerUpdateCustomerName.Text = customer.Name;
+                txtManageCustomerUpdateCustomerAddress.Text = customer.Address;
+                txtManageCustomerUpdatePhone.Text = customer.PhoneNumber;
+            }
+
+
+        }
+        private void btnManageCustomerUpdateAddCustomer_Click(object sender, RoutedEventArgs e)
+        {
+            if (txtManageCustomerUpdateCustomerID.Text != "" && ValidateInputManageCustomer(txtManageCustomerUpdateCustomerName, txtManageCustomerUpdateCustomerAddress, txtManageCustomerUpdatePhone))
+            {
+                Customer customer = new Customer();
+                customer.CustomerID = Convert.ToInt16(txtManageCustomerUpdateCustomerID.Text);
+                customer.Name = txtManageCustomerUpdateCustomerName.Text;
+                customer.Address = txtManageCustomerUpdateCustomerAddress.Text;
+                customer.PhoneNumber = txtManageCustomerUpdatePhone.Text;
+                if (customer != null)
+                {
+                    customerRepository.UpdateCustomer(customer);
+                    LoadTabManageCustomer();
+                }
+            }
+
+        }
+        private void txtManageCustomerFindCustomerName_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            if (txtManageCustomerFindCustomerName.Text != "")
+            {
+                lvwManageCustomerListCustomer.ItemsSource = null;
+                lvwManageCustomerListCustomer.ItemsSource = customerRepository.FindCustomerName(txtManageCustomerFindCustomerName.Text).ToList();
+            }
+            else
+            {
+                lvwManageCustomerListCustomer.ItemsSource = null;
+                lvwManageCustomerListCustomer.ItemsSource = customerRepository.GetCustomers().ToList();
+            }
+        }
         #endregion
 
         #region Manage Title - tab "QUẢN LÝ TỰA ĐỀ"
         private void LoadTabManageTitle()
         {
-            cboManageTitleTypeTitle.ItemsSource = typeDiskRepository.GetAll().Select(x => x.TypeName).ToList();
-            cboManageTitleCostTypeTitle.ItemsSource = typeDiskRepository.GetAll().Select(x => x.TypeName).ToList();
+            List<string> typeDisks = new List<string>();
+            typeDisks = typeDiskRepository.GetAll().Select(x => x.TypeName).ToList();
+            cboManageTitleTypeTitle.ItemsSource = typeDisks;
+            cboManageTitleUpdateTypeTitle.ItemsSource = typeDisks;
+            TextPeriodCostChanged();
             LoadListTypeManageTitle();
         }
         private void LoadListTypeManageTitle()
@@ -508,7 +593,7 @@ namespace VideoRentalStoreSystem.UI
 
                 if (!char.IsLetter(c) && !char.IsNumber(c) && c != ' ')
                 {
-                    MessageBox.Show(VRSSMessage.MessageNum16, "Thông báo", MessageBoxButton.OK, MessageBoxImage.Information);
+                    MessageBox.Show(VRSSMessage.TitileNotSpecialCharacter, "Thông báo", MessageBoxButton.OK, MessageBoxImage.Information);
                     txtManageTitleTitleName.Focus();
                     txtManageTitleTitleName.SelectAll();
                     return false;
@@ -516,14 +601,14 @@ namespace VideoRentalStoreSystem.UI
             }
             if (string.IsNullOrEmpty(txtManageTitleTitleName.Text.Trim()))
             {
-                MessageBox.Show(VRSSMessage.MessageNum17, "Thông báo", MessageBoxButton.OK, MessageBoxImage.Information);
+                MessageBox.Show(VRSSMessage.TitleNotEmpty, "Thông báo", MessageBoxButton.OK, MessageBoxImage.Information);
                 txtManageTitleTitleName.Focus();
                 txtManageTitleTitleName.SelectAll();
                 return false;
             }
             if (cboManageTitleTypeTitle.Text == "")
             {
-                MessageBox.Show(VRSSMessage.MessageNum18, "Thông báo", MessageBoxButton.OK, MessageBoxImage.Information);
+                MessageBox.Show(VRSSMessage.ChooseTypeOfTitle, "Thông báo", MessageBoxButton.OK, MessageBoxImage.Information);
                 return false;
             }
             return true;
@@ -544,31 +629,100 @@ namespace VideoRentalStoreSystem.UI
                 }
                 catch (Exception)
                 {
-                    MessageBox.Show(VRSSMessage.MessageNum27,"Thông báo",MessageBoxButton.OK,MessageBoxImage.Information);
+                    MessageBox.Show(VRSSMessage.AddFail, "Thông báo", MessageBoxButton.OK, MessageBoxImage.Information);
                     return;
                 }
             }
         }
         private void btnManageTitleUpdateCostTitle_Click(object sender, RoutedEventArgs e)
         {
-            if (ValidateInputManageTitle())
+            if (validateUpdateTypeTitle())
             {
-                TitleDisk title = new TitleDisk();
-                title.Title = txtManageTitleTitleName.Text.Trim();
-                title.TypeName = cboManageTitleTypeTitle.Text.Trim();
-                ManageTitle manageTitle = new ManageTitle();
-                try
+                TypeDisk typeDisk = new TypeDisk();
+                typeDisk.TypeName = cboManageTitleUpdateTypeTitle.SelectedValue.ToString();
+                typeDisk.Cost = Convert.ToDouble(txtManageTitleCostTitleName.Text);
+                typeDisk.Period = Convert.ToInt16(txtManageTitlePeriodTitleName.Text);
+                typeDisk.LateCharge = Convert.ToDouble(txtManageTitleLateChargeTitleName.Text);
+                if (!typeDiskRepository.Update(typeDisk))
                 {
-                    manageTitle.AddTitle(title);
-                    txtManageTitleTitleName.Clear();
-                    LoadTabManageTitle();
-                }
-                catch (Exception)
-                {
-                    MessageBox.Show(VRSSMessage.MessageNum27, "Thông báo", MessageBoxButton.OK, MessageBoxImage.Information);
+                    MessageBox.Show(VRSSMessage.UdpdatedFail, "Thông báo", MessageBoxButton.OK, MessageBoxImage.Information);
                     return;
                 }
+                LoadTabManageTitle();
+
             }
+        }
+        private bool validateUpdateTypeTitle()
+        {
+            if (!IsNumber(txtManageTitleCostTitleName.Text))
+            {
+                MessageBox.Show(VRSSMessage.CostRentalIsNumber, "Thông báo", MessageBoxButton.OK, MessageBoxImage.Information);
+                txtManageTitleCostTitleName.Clear();
+                txtManageTitleCostTitleName.Focus();
+                return false;
+            }
+            else if (!IsNumber(txtManageTitlePeriodTitleName.Text))
+            {
+                MessageBox.Show(VRSSMessage.PeriodRentalIsNumber, "Thông báo", MessageBoxButton.OK, MessageBoxImage.Information);
+                txtManageTitlePeriodTitleName.Clear();
+                txtManageTitlePeriodTitleName.Focus();
+                return false;
+            }
+            else if (!IsNumber(txtManageTitleLateChargeTitleName.Text))
+            {
+                MessageBox.Show(VRSSMessage.CostLateChargeRentalIsNumber, "Thông báo", MessageBoxButton.OK, MessageBoxImage.Information);
+                txtManageTitleLateChargeTitleName.Clear();
+                txtManageTitleLateChargeTitleName.Focus();
+                return false;
+            }
+            return true;
+        }
+        private void cboManageTitleCostTypeTitle_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            TextPeriodCostChanged();
+        }
+        private void TextPeriodCostChanged()
+        {
+            string typeName = cboManageTitleUpdateTypeTitle.SelectedValue.ToString();
+            if (typeName != "")
+            {
+                TypeDisk typeDisk = new TypeDisk();
+                typeDisk = typeDiskRepository.GetAll().Where(x => x.TypeName == typeName).FirstOrDefault();
+                txtManageTitleCostTitleName.Text = typeDisk.Cost.ToString();
+                txtManageTitlePeriodTitleName.Text = typeDisk.Period.ToString();
+                txtManageTitleLateChargeTitleName.Text = typeDisk.LateCharge.ToString();
+            }
+
+        }
+        private void txtManageTitleFindTitleName_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            if (txtManageTitleFindTitleName.Text != "")
+            {
+                lvwManageTitleListTitle.ItemsSource = null;
+                lvwManageTitleListTitle.ItemsSource = titleResponsitory.Find(txtManageTitleFindTitleName.Text).ToList();
+            }
+            else
+            {
+                lvwManageTitleListTitle.ItemsSource = null;
+                lvwManageTitleListTitle.ItemsSource = titleResponsitory.GetAll().ToList();
+            }
+
+        }
+        private void btnManageTitleDeleteTitle_Click(object sender, RoutedEventArgs e)
+        {
+            ManageTitle manageTitle = new ManageTitle();
+            foreach (var item in lvwManageTitleListTitle.SelectedItems)
+            {
+                if (item is TitleDisk titleDisk)
+                {
+                    if (!manageTitle.IsDelete(titleDisk))
+                        if(MessageBox.Show(VRSSMessage.DeleteTitleFail.Replace("<title>", titleDisk.Title), "Thông báo", MessageBoxButton.OKCancel, MessageBoxImage.Information) == MessageBoxResult.OK)
+                        {
+                            manageTitle.Delete(titleDisk.Title);
+                        }
+                }
+            }
+            LoadTabManageTitle();
         }
         #endregion
 
@@ -577,6 +731,8 @@ namespace VideoRentalStoreSystem.UI
         {
             lbxManageInventoryListBoxTitleDisk.ItemsSource = null;
             lbxManageInventoryListBoxTitleDisk.ItemsSource = titleResponsitory.GetAll().ToList();
+            lvwManageInventoryListDeleteIdDiskOfTitle.ItemsSource = null;
+            lvwManageInventoryListDeleteIdDiskOfTitle.ItemsSource = diskRepository.GetDisks().ToList();
             if (lbxManageInventoryListBoxTitleDisk.ItemsSource != null)
             {
                 lbxManageInventoryListBoxTitleDisk.SelectedIndex = 0;
@@ -595,10 +751,6 @@ namespace VideoRentalStoreSystem.UI
                 if (lbxManageInventoryListBoxTitleDisk.ItemsSource != null)
                 {
                     lbxManageInventoryListBoxTitleDisk.SelectedIndex = 0;
-                    if (lbxManageInventoryListBoxTitleDisk.Items.Count <= 0)
-                    {
-
-                    }
                 }
             }
         }
@@ -627,19 +779,19 @@ namespace VideoRentalStoreSystem.UI
         {
             if (lblManageInventoryDiskTitle.Content.ToString().Trim() == "")
             {
-                MessageBox.Show(VRSSMessage.MessageNum19, "Thông báo", MessageBoxButton.OK, MessageBoxImage.Information);
+                MessageBox.Show(VRSSMessage.YouMustChooseTitle, "Thông báo", MessageBoxButton.OK, MessageBoxImage.Information);
                 return false;
             }
             if (string.IsNullOrEmpty(tbxManageInventoryMountOfDisk.Text.Trim()))
             {
-                MessageBox.Show(VRSSMessage.MessageNum20, "Thông báo", MessageBoxButton.OK, MessageBoxImage.Information);
+                MessageBox.Show(VRSSMessage.NumberOfDiskNotEmpty, "Thông báo", MessageBoxButton.OK, MessageBoxImage.Information);
                 tbxManageInventoryMountOfDisk.Focus();
                 return false;
             }
             int num;
             if (!int.TryParse(tbxManageInventoryMountOfDisk.Text.Trim(), out num))
             {
-                MessageBox.Show(VRSSMessage.MessageNum21, "Thông báo", MessageBoxButton.OK, MessageBoxImage.Information);
+                MessageBox.Show(VRSSMessage.NumberOfDishLargerThan0, "Thông báo", MessageBoxButton.OK, MessageBoxImage.Information);
                 tbxManageInventoryMountOfDisk.Focus();
                 tbxManageInventoryMountOfDisk.SelectAll();
                 return false;
@@ -648,7 +800,7 @@ namespace VideoRentalStoreSystem.UI
             {
                 if (num < 0 || num > 20)
                 {
-                    MessageBox.Show(VRSSMessage.MessageNum21, "Thông báo", MessageBoxButton.OK, MessageBoxImage.Information);
+                    MessageBox.Show(VRSSMessage.NumberOfDishLargerThan0, "Thông báo", MessageBoxButton.OK, MessageBoxImage.Information);
                     tbxManageInventoryMountOfDisk.Focus();
                     tbxManageInventoryMountOfDisk.SelectAll();
                     return false;
@@ -665,8 +817,52 @@ namespace VideoRentalStoreSystem.UI
             {
                 ManageDisk manageDisk = new ManageDisk();
                 manageDisk.AddDisk(int.Parse(tbxManageInventoryMountOfDisk.Text.Trim()), lblManageInventoryDiskTitle.Content.ToString());
-                lbxManageInventoryListBoxTitleDisk_Load();
+                //lbxManageInventoryListBoxTitleDisk_Load();
                 tbxManageInventoryMountOfDisk.Clear();
+                LoadTabManageInventory();
+            }
+        }
+        private void tbxManageInventoryFindDiskID_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            if (tbxManageInventoryFindDiskID.Text != "")
+            {
+                TitleDisk titleDisk = (TitleDisk)lbxManageInventoryListBoxTitleDisk.SelectedItem;
+                lvwManageInventoryListDeleteIdDiskOfTitle.ItemsSource = null;
+                lvwManageInventoryListDeleteIdDiskOfTitle.ItemsSource = diskRepository.GetDisks().Where(x => x.DiskID.ToString().Contains(tbxManageInventoryFindDiskID.Text)).ToList();
+            }
+            else
+            {
+                TitleDisk titleDisk = (TitleDisk)lbxManageInventoryListBoxTitleDisk.SelectedItem;
+                lvwManageInventoryListDeleteIdDiskOfTitle.ItemsSource = null;
+                lvwManageInventoryListDeleteIdDiskOfTitle.ItemsSource = diskRepository.GetDisks().ToList();
+            }
+        }
+
+        private void btnManageDiskDeleteDisk_Click(object sender, RoutedEventArgs e)
+        {
+            ManageDisk manageDisk = new ManageDisk();
+            string alert = "";
+            List<Disk> disks = new List<Disk>();
+            if (lvwManageInventoryListDeleteIdDiskOfTitle.SelectedIndex != -1)
+            {
+                foreach (Disk disk in lvwManageInventoryListDeleteIdDiskOfTitle.SelectedItems)
+                {
+                    if (!manageDisk.isDelete(disk))
+                        alert += " " + disk.DiskID;
+                        disks.Add(disk);
+                }
+                if (alert != "")
+                {
+                    if (MessageBox.Show(VRSSMessage.DeleteDiskAmout.Replace("<id>", alert), "Thông báo", MessageBoxButton.OKCancel, MessageBoxImage.Information) == MessageBoxResult.OK)
+                    {
+                        manageDisk.DeleteDisk(disks);
+                    }
+                }
+                else
+                {
+                    manageDisk.DeleteDisk(disks);
+                }
+                LoadTabManageInventory();
             }
         }
         #endregion
@@ -729,6 +925,7 @@ namespace VideoRentalStoreSystem.UI
             btnLogin.IsEnabled = !value;
             btnLogout.IsEnabled = value;
             btnManageTitleUpdateCostTitle.IsEnabled = value;
+            btnManageTitleUpdateCostTitle.IsEnabled = value;
             if (!value)
                 if (indexTab != 0)
                 {
@@ -743,7 +940,7 @@ namespace VideoRentalStoreSystem.UI
         {
             if (SecurityService.IsLogin())
             {
-                MessageBox.Show(VRSSMessage.MessageNum24);
+                MessageBox.Show(VRSSMessage.Logined);
                 return;
             }
             LoginWindow loginWindow = new LoginWindow();
@@ -794,6 +991,16 @@ namespace VideoRentalStoreSystem.UI
 
 
 
+
+
+
+
+
+
+
+
         #endregion
+
+
     }
 }

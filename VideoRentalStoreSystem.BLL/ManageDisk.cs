@@ -1,4 +1,5 @@
-﻿using VideoRentalStoreSystem.DAL;
+﻿using System.Collections.Generic;
+using VideoRentalStoreSystem.DAL;
 using VideoRentalStoreSystem.DAL.DBContextEF;
 using VideoRentalStoreSystem.DAL.Repositories;
 
@@ -22,6 +23,16 @@ namespace VideoRentalStoreSystem.BLL
                 disk.Status = StatusOfDisk.ON_SHELF;
                 diskResponsitory.Insert(disk);
             }
+        }
+        public bool isDelete(Disk disk)
+        {
+            if (disk.Status == StatusOfDisk.ON_HOLD || disk.Status == StatusOfDisk.RENTED || !diskResponsitory.IsDelete(disk))
+                return false;
+            return true;
+        }
+        public void DeleteDisk(List<Disk> disks)
+        {
+            diskResponsitory.DeleteDisk(disks);
         }
     }
 }

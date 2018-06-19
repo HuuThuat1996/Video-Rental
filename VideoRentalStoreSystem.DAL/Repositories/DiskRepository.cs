@@ -125,7 +125,7 @@ namespace VideoRentalStoreSystem.DAL.Repositories
 
         public IQueryable<Disk> GetByTitle(string title)
         {
-            return _context.Disks.Where(x => x.Title == title);
+            return _context.Disks.Where(x => x.Title == title && x.Status != StatusOfDisk.DELETE);
         }
 
         public void Modify(Disk entity)
@@ -136,6 +136,30 @@ namespace VideoRentalStoreSystem.DAL.Repositories
         public void Modify(List<int> lst, string status)
         {
             throw new System.NotImplementedException();
+        }
+        public IQueryable<Disk> GetDisks()
+        {
+            return _context.Disks.OrderBy(y => y.DiskID).Where(x => x.Status != StatusOfDisk.DELETE);
+        }
+        public void DeleteDisk(List<Disk> listDisk)
+        {
+            foreach (Disk disk in listDisk)
+            {
+                Disk diskDelete =
+                    _context.Disks.Where(x => x.DiskID.Equals(disk.DiskID)).FirstOrDefault();
+                diskDelete.Status = StatusOfDisk.DELETE;
+
+            }
+            _context.SaveChanges();
+
+        }
+        public bool IsDelete(Disk disk)
+        {
+            if(_context.RentalRecordDetails.Where(x => x.DiskID.Equals(disk.DiskID) && x.LateCharge != null).ToList().Count!=0)
+            {
+                return false;
+            }
+            return true;
         }
     }
 }
