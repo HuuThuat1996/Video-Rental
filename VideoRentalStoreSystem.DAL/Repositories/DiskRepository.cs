@@ -98,7 +98,7 @@ namespace VideoRentalStoreSystem.DAL.Repositories
                 lstDiskInformation.AddRange(lstDiskOn_Shelf);
                 lstDiskInformation.AddRange(lstDiskOn_Hold);
             }
-            return lstDiskInformation.OrderBy(x => x.DiskID).ToList();
+            return lstDiskInformation.OrderBy(x => x.DiskID).Where(w=>w.Status!= StatusOfDisk.DELETE).ToList();
         }
 
         public object GetInfoAllDisk()

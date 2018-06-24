@@ -14,5 +14,10 @@ namespace VideoRentalStoreSystem.DAL.Repositories
         {
             return _context.RentalRecords.Where(x => x.CustomerID == customerId);
         }
+        public RentalRecord Get(int ID)
+        {
+            return _context.RentalRecords.Where(x => x.RentalRecordID == ID).FirstOrDefault();
+
+        }
     }
 }

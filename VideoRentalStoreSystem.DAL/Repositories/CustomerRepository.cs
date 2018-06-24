@@ -97,23 +97,6 @@ namespace VideoRentalStoreSystem.DAL.Repositories
         {
             return _context.Customers.Where(x => x.IsDeleted == StatusCustomer.Already).ToList();
         }
-        /// <summary>
-        /// Lấy ra khách hàng có đĩa trả trễ
-        /// </summary>
-        /// <param name="DiskID"> mã đĩa trả trễ</param>
-        /// <returns>khách hàng</returns>
-        public Customer GetCustomerByDiskLateCharge(int DiskID)
-        {
-            // lấy danh sách hóa đơn có đĩa quá hạn.
-            RentalRecordDetail rentalRecordDetail = new RentalRecordDetail();
-            rentalRecordDetail = _context.RentalRecordDetails.Where(x => x.DiskID == DiskID && x.LateCharge != null).FirstOrDefault();
-            RentalRecord rentalRecord = new RentalRecord();
-            rentalRecord = _context.RentalRecords.Where(x => x.RentalRecordID.Equals(rentalRecordDetail.RentalRecordID)).FirstOrDefault();
-            return _context.Customers.Where(c => c.CustomerID.Equals(rentalRecord.RentalRecordID)).FirstOrDefault();
-        }
-        public List<RentalRecordDetail> GetInformationLateCharges(Customer customer)
-        {
-          return  _context.RentalRecordDetails.Where(x => x.RentalRecordID == x.RentalRecord.RentalRecordID && customer.CustomerID == x.RentalRecord.CustomerID).ToList();
-        }
+
     }
 }

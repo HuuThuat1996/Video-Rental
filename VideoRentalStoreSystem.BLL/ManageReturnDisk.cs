@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Transactions;
 using VideoRentalStoreSystem.DAL;
 using VideoRentalStoreSystem.DAL.DBContextEF;
@@ -10,11 +11,12 @@ namespace VideoRentalStoreSystem.BLL
     {
         private RentalRecordDetailRepository detailRepository;
         private DiskRepository diskRepository;
-
-        public ManageReturnDisk( DBVRContext context)
+        private RentalRecordRepository recordRepository;
+        public ManageReturnDisk( )
         {
-            detailRepository = new RentalRecordDetailRepository(context);
-            diskRepository = new DiskRepository(context);
+            detailRepository = new RentalRecordDetailRepository(new DBVRContext());
+            diskRepository = new DiskRepository(new DBVRContext());
+            recordRepository = new RentalRecordRepository(new DBVRContext());
         }
         /// <summary>
         /// 
@@ -32,11 +34,12 @@ namespace VideoRentalStoreSystem.BLL
             {
                 AddLateCharge addLateCharge = new AddLateCharge();
                 RentalRecordDetail detailLatest = detailRepository.GetLatest(disk.DiskID);
+                RentalRecord rentalRecord = recordRepository.Get(detailLatest.RentalRecordID);
                 if (detailLatest != null)
                 {
                     if (dateReturn > detailLatest.DateReturn.Date)
                     {
-                        int result = addLateCharge.Add(disk.DiskID);
+                        int result = addLateCharge.Add(disk.DiskID, dateReturn);
                         if (result >= 0)
                         {
                             return 1;
@@ -45,6 +48,10 @@ namespace VideoRentalStoreSystem.BLL
                         {
                             return -1;
                         }
+                    }
+                    else if(dateReturn < rentalRecord.DateRental)
+                    {
+                        return 3;
                     }
                     else
                     {
@@ -69,5 +76,13 @@ namespace VideoRentalStoreSystem.BLL
             }
             return -1;
         }
+        public void  UpdateLateCharge(RentalRecordDetail detail)
+        {
+            detailRepository.UpdateLateCharge(detail);
+          
+        }
+       
+       
+
     }
 }

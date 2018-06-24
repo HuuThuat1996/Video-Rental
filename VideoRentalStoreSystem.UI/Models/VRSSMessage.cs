@@ -139,6 +139,10 @@
         /// Đĩa này đang được giữ hoặc thuê. Bạn có muốn xóa không
         /// </summary>
         public static string DeleteDiskAmout = "Đĩa<id> đang được giữ, thuê hoặc có phí trễ hạn. Bạn có muốn xóa không";
+        /// <summary>
+        /// Ngày trả không được trước ngày cho thuê
+        /// </summary>
+        public static string DateReturnActualFail = "Ngày trả không được trước ngày cho thuê";
     }
 
 }

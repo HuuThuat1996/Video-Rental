@@ -35,10 +35,6 @@ namespace VideoRentalStoreSystem.BLL
             customerRepository.DeleteCustomer(customerID);
         }
 
-        public void GetInformationLateCharge(int DiskID)
-        {
-            customerRepository.GetCustomerByDiskLateCharge(DiskID);
-        }
     }
 
 }

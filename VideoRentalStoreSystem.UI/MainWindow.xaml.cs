@@ -38,7 +38,7 @@ namespace VideoRentalStoreSystem.UI
         private ManageRentalRecordDetail manageRentalRecordDetail;
         private ManageRentalRecord manageRentalRecord;
         private ManageReturnDisk manageReturnRepository;
-
+        private RentalRecordDetailRepository detailRepository;
         public MainWindow()
         {
             InitializeComponent();
@@ -46,12 +46,14 @@ namespace VideoRentalStoreSystem.UI
             checkLogin = new delegateCheckLogin(CheckLogin);
 
             context = new DBVRContext();
+            detailRepository = new RentalRecordDetailRepository(context);
             customerRepository = new CustomerRepository(context);
             titleResponsitory = new TitleDiskResponsitory(context);
             typeDiskRepository = new TypeDiskRepository(context);
             diskRepository = new DiskRepository(context);
-            manageReturnRepository = new ManageReturnDisk(context);
+            manageReturnRepository = new ManageReturnDisk();
             LoadTabRental();
+            dtpReturnDiskDateActualReturn.DisplayDateEnd = DateTime.Now;
             Block(false);
         }
 
@@ -340,11 +342,17 @@ namespace VideoRentalStoreSystem.UI
                             MessageBox.Show(VRSSMessage.DiskReturnedSuccess, "Thông báo", MessageBoxButton.OK, MessageBoxImage.Information);
                             lblReturnDiskMessage.Content = "";
                         }
+                        else if(result == 3)
+                        {
+                            MessageBox.Show(VRSSMessage.DateReturnActualFail, "Thông báo", MessageBoxButton.OK, MessageBoxImage.Information);
+                        }
                         else
                         {
                             if (MessageBox.Show(VRSSMessage.DiskReturnedSuccessAndLateCharge, "Thông báo", MessageBoxButton.OKCancel, MessageBoxImage.Information) == MessageBoxResult.OK)
                             {
-
+                                lvwViewReturnDiskLateCharge.ItemsSource = null;
+                                tbxReturnDiskCustomerID.Text = detailRepository.GetCustomerByDiskLateCharge(disk.DiskID).CustomerID+"";
+                                lvwViewReturnDiskLateCharge.ItemsSource = detailRepository.GetInformationLateCharges(detailRepository.GetCustomerByDiskLateCharge(disk.DiskID).CustomerID);
                             }
                             lblReturnDiskMessage.Content = "Đĩa có mã số " + disk.DiskID + " trễ hạn trả.";
                         }
@@ -366,6 +374,44 @@ namespace VideoRentalStoreSystem.UI
                 MessageBox.Show(VRSSMessage.NotChooseDiskReturn, "", MessageBoxButton.OK, MessageBoxImage.Information);
                 return;
             }
+        }
+        private void btnReturnDiskSearchCustomer_Click(object sender, RoutedEventArgs e)
+        { 
+            if(tbxReturnDiskCustomerID.Text !="" && IsNumber(tbxReturnDiskCustomerID.Text))
+            {
+                lvwViewReturnDiskLateCharge.ItemsSource = null;
+                lvwViewReturnDiskLateCharge.ItemsSource = detailRepository.GetInformationLateCharges(Convert.ToInt16(tbxReturnDiskCustomerID.Text));
+            }
+        }
+        private void lvwViewReturnDiskLateCharge_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            double totalPrice = 0;
+            if(lvwViewReturnDiskLateCharge.SelectedIndex !=-1)
+            {
+                foreach(RentalRecordDetail detail in lvwViewReturnDiskLateCharge.SelectedItems)
+                {
+                    totalPrice +=Convert.ToInt32(detail.LateCharge);
+                }
+            }
+            lblReturnDiskTotalPrice.Content = totalPrice + "";
+        }
+        private void btnReturnDiskPayLateCharge_Click(object sender, RoutedEventArgs e)
+        {
+            List<RentalRecordDetail> rentalRecordDetails = new List<RentalRecordDetail>();
+            foreach (RentalRecordDetail detail in lvwViewReturnDiskLateCharge.Items)
+            {
+                rentalRecordDetails.Add(detail);
+            }
+            if (lvwViewReturnDiskLateCharge.SelectedIndex != -1)
+            {
+                foreach (RentalRecordDetail detail in lvwViewReturnDiskLateCharge.SelectedItems)
+                {
+                    manageReturnRepository.UpdateLateCharge(detail);
+                    rentalRecordDetails.Remove(detail);
+                }
+                lvwViewReturnDiskLateCharge.ItemsSource = rentalRecordDetails;
+            }
+
         }
         #endregion
 
@@ -716,10 +762,14 @@ namespace VideoRentalStoreSystem.UI
                 if (item is TitleDisk titleDisk)
                 {
                     if (!manageTitle.IsDelete(titleDisk))
-                        if(MessageBox.Show(VRSSMessage.DeleteTitleFail.Replace("<title>", titleDisk.Title), "Thông báo", MessageBoxButton.OKCancel, MessageBoxImage.Information) == MessageBoxResult.OK)
-                        {
+                    {
+                        if (MessageBox.Show(VRSSMessage.DeleteTitleFail.Replace("<title>", titleDisk.Title), "Thông báo", MessageBoxButton.OKCancel, MessageBoxImage.Information) == MessageBoxResult.OK)
                             manageTitle.Delete(titleDisk.Title);
-                        }
+                    }
+                    else
+                    {
+                        manageTitle.Delete(titleDisk.Title);
+                    }
                 }
             }
             LoadTabManageTitle();
@@ -849,7 +899,7 @@ namespace VideoRentalStoreSystem.UI
                 {
                     if (!manageDisk.isDelete(disk))
                         alert += " " + disk.DiskID;
-                        disks.Add(disk);
+                    disks.Add(disk);
                 }
                 if (alert != "")
                 {
@@ -919,13 +969,30 @@ namespace VideoRentalStoreSystem.UI
         public void Block(bool value)
         {
             btnManageTitleAddTitle.IsEnabled = value;
-            btnTabItemReports.IsEnabled = value;
-            btnTabItemManageInventory.IsEnabled = value;
+
             btnManageCustomerDeleteCustomer.IsEnabled = value;
+            btnManageTitleUpdateCostTitle.IsEnabled = value;
+            btnManageTitleUpdateCostTitle.IsEnabled = value;
             btnLogin.IsEnabled = !value;
             btnLogout.IsEnabled = value;
-            btnManageTitleUpdateCostTitle.IsEnabled = value;
-            btnManageTitleUpdateCostTitle.IsEnabled = value;
+            btnTabItemReports.IsEnabled = value;
+            btnTabItemManageInventory.IsEnabled = value;
+            if (value)
+            {
+                btnLogin.Visibility= Visibility.Hidden;
+                btnLogout.Visibility = Visibility.Visible;
+                btnTabItemReports.Visibility = Visibility.Visible;
+                btnTabItemManageInventory.Visibility = Visibility.Visible;
+
+            }
+            else
+            {
+                btnLogin.Visibility = Visibility.Visible;
+                btnLogout.Visibility = Visibility.Hidden;
+                btnTabItemReports.Visibility = Visibility.Hidden;
+                btnTabItemManageInventory.Visibility = Visibility.Hidden;
+          
+            }
             if (!value)
                 if (indexTab != 0)
                 {
@@ -999,8 +1066,11 @@ namespace VideoRentalStoreSystem.UI
 
 
 
+
+
+
         #endregion
 
-
+       
     }
 }

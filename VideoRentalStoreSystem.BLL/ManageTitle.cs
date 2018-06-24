@@ -21,6 +21,13 @@ namespace VideoRentalStoreSystem.BLL
         {
             titleResponsitory.Insert(title);
         }
+        /// <summary>
+        /// Kiểm tra xóa tựa đề
+        /// </summary>
+        /// <param name="title"></param>
+        /// <returns>true : tựa đề không có đĩa quá hạn hoặc đang cho thuê</returns>
+        /// <returns>false : tựa đề có đĩa quá hạn hoặc đang cho thuê</returns>
+        /// 
         public bool IsDelete(TitleDisk title)
         {
             if (titleResponsitory.IsDelete(title.Title))

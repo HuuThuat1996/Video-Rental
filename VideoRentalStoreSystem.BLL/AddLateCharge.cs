@@ -28,7 +28,7 @@ namespace VideoRentalStoreSystem.BLL
         /// Not have late charge return 0
         /// Order return -2
         /// </returns>
-        public int Add(int diskId)
+        public int Add(int diskId, DateTime DateReturn)
         {
             //Check status disk
             DiskRepository diskRepository = new DiskRepository(new DBVRContext());
@@ -44,15 +44,12 @@ namespace VideoRentalStoreSystem.BLL
                         {
                             try
                             {
-                                if (DateTime.Now.Date > detail.DateReturn)
-                                {
-                                    detail.DateReturnActual = DateTime.Now;
+                                    detail.DateReturnActual = DateReturn;
                                     detail.LateCharge = disk.TitleDisk.TypeDisk.LateCharge;
                                     detailRepository.Update(detail);
                                     diskRepository.ModifyStatus(disk, StatusOfDisk.ON_SHELF);
                                     transaction.Complete();
                                     return 1;
-                                }
                             }
                             catch
                             {
