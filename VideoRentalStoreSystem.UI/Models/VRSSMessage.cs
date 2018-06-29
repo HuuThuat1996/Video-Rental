@@ -14,7 +14,7 @@
         /// <summary>
         /// Chưa chọn khách hàng muốn thuê đĩa! Xin hay kiểm tra lại.
         /// </summary>
-        public static string NotChooseCustomerRent = "Chưa chọn khách hàng muốn thuê đĩa! Xin hay kiểm tra lại.";
+        public static string NotChooseCustomer = "Chưa chọn khách hàng! Xin hay kiểm tra lại.";
         /// <summary>
         /// Đã xảy ra lỗi khi tạo hóa đơn! Xin hay thử lại.
         /// </summary>
@@ -143,6 +143,26 @@
         /// Ngày trả không được trước ngày cho thuê
         /// </summary>
         public static string DateReturnActualFail = "Ngày trả không được trước ngày cho thuê";
+        /// <summary>
+        /// Bạn chưa chọn tựa đề 
+        /// </summary>
+        public static string NotChooseTitle = "Bạn chưa chọn tựa đề ";
+        /// <summary>
+        /// Bạn chưa chọn
+        /// </summary>
+        public static string NotChooseReservation = "Chưa chọn mục đăt đĩa muốn xóa ";
+        /// <summary>
+        /// Giá thuê không được rỗng
+        /// </summary>
+        public static string CostEmpty = "Giá thuê không được rỗng";
+        /// <summary>
+        /// Kỳ hạn không được rỗng
+        /// </summary>
+        public static string PeriodEmpty = "Kỳ hạn không được rỗng";
+        /// <summary>
+        /// Phí trả trễ không được rỗng
+        /// </summary>
+        public static string LateChargeEmpty = "Phí trả trễ không được rỗng";
     }
 
 }

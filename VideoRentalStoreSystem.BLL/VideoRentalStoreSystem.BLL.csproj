@@ -48,6 +48,7 @@
     <Compile Include="ManageRentalRecord.cs" />
     <Compile Include="ManageRentalRecordDetail.cs" />
     <Compile Include="ManageDisk.cs" />
+    <Compile Include="ManageReservation.cs" />
     <Compile Include="ManageReturnDisk.cs" />
     <Compile Include="ManageTitle.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

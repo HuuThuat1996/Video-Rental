@@ -39,6 +39,7 @@ namespace VideoRentalStoreSystem.UI
         private ManageRentalRecord manageRentalRecord;
         private ManageReturnDisk manageReturnRepository;
         private RentalRecordDetailRepository detailRepository;
+        private ReservationRepository reservationRepository;
         public MainWindow()
         {
             InitializeComponent();
@@ -51,7 +52,9 @@ namespace VideoRentalStoreSystem.UI
             titleResponsitory = new TitleDiskResponsitory(context);
             typeDiskRepository = new TypeDiskRepository(context);
             diskRepository = new DiskRepository(context);
+            reservationRepository = new ReservationRepository(context);
             manageReturnRepository = new ManageReturnDisk();
+
             LoadTabRental();
             dtpReturnDiskDateActualReturn.DisplayDateEnd = DateTime.Now;
             Block(false);
@@ -114,25 +117,36 @@ namespace VideoRentalStoreSystem.UI
                 indexTab = 4;
             }
         }
-        private void btnTabItemManageInventory_Click(object sender, RoutedEventArgs e)
+        private void btnTabItemManageReservationDisk_Click(object sender, RoutedEventArgs e)
         {
             if (indexTab != 5)
             {
                 tabControl.SelectedIndex = 5;
-                LoadTabManageInventory();
+                LoadTabManageReservation();
                 SetForegroundTab(Colors.Black, Colors.Black, Colors.Black,
                     Colors.Black, Colors.Black, Colors.Blue, Colors.Black);
                 indexTab = 5;
             }
         }
-        private void btnTabItemReports_Click(object sender, RoutedEventArgs e)
+        private void btnTabItemManageInventory_Click(object sender, RoutedEventArgs e)
         {
             if (indexTab != 6)
             {
                 tabControl.SelectedIndex = 6;
+                LoadTabManageInventory();
+                SetForegroundTab(Colors.Black, Colors.Black, Colors.Black,
+                    Colors.Black, Colors.Black, Colors.Blue, Colors.Black);
+                indexTab = 6;
+            }
+        }
+        private void btnTabItemReports_Click(object sender, RoutedEventArgs e)
+        {
+            if (indexTab != 7)
+            {
+                tabControl.SelectedIndex = 7;
                 SetForegroundTab(Colors.Black, Colors.Black, Colors.Black,
                     Colors.Black, Colors.Black, Colors.Black, Colors.Blue);
-                indexTab = 6;
+                indexTab = 7;
             }
         }
         private void SetForegroundTab(Color col1, Color col2, Color col3, Color col4, Color col5, Color col6, Color col7)
@@ -145,6 +159,7 @@ namespace VideoRentalStoreSystem.UI
             btnTabItemManageInventory.Foreground = new SolidColorBrush(col6);
             btnTabItemReports.Foreground = new SolidColorBrush(col7);
         }
+      
         #endregion
 
         #region Rental - tab "CHO THUÊ ĐĨA"
@@ -164,7 +179,7 @@ namespace VideoRentalStoreSystem.UI
             lbxRentalResultDiskId.ItemsSource = null;
 
             lbxRentalResultCusId.ItemsSource = customerRepository.GetCustomers().ToList();
-            lstDiskCurrent = diskRepository.Get(StatusOfDisk.ON_SHELF).ToList();
+            lstDiskCurrent = diskRepository.Get().Where(x=>x.Status != StatusOfDisk.RENTED).ToList();
             lbxRentalResultDiskId.ItemsSource = lstDiskCurrent;
 
             lblRentalIdCus.Content = "";
@@ -237,7 +252,7 @@ namespace VideoRentalStoreSystem.UI
             }
             else
             {
-                MessageBox.Show(VRSSMessage.NotChooseDiskRent);
+                MessageBox.Show(VRSSMessage.NotChooseDiskRent, "Thông báo", MessageBoxButton.OK, MessageBoxImage.Information);
             }
         }
         private void btnRemoveDisk_Click(object sender, RoutedEventArgs e)
@@ -276,7 +291,7 @@ namespace VideoRentalStoreSystem.UI
             if (string.IsNullOrEmpty(lblRentalIdCus.Content.ToString()) || !int.TryParse(lblRentalIdCus.Content.ToString(), out customerId))
             {
                 customerId = 0;
-                MessageBox.Show(VRSSMessage.NotChooseCustomerRent, "Thông báo", MessageBoxButton.OK, MessageBoxImage.Information);
+                MessageBox.Show(VRSSMessage.NotChooseCustomer, "Thông báo", MessageBoxButton.OK, MessageBoxImage.Information);
                 return;
             }
             if (lstDiskChoosed.Count > 0)
@@ -317,7 +332,7 @@ namespace VideoRentalStoreSystem.UI
         {
             lstDiskIdReturn = new List<Disk>();
             lbxReturnResultSearch.ItemsSource = null;
-            lbxReturnResultSearch.ItemsSource = diskRepository.Get(StatusOfDisk.RENTED).ToList();
+            lbxReturnResultSearch.ItemsSource = diskRepository.Get().Where(x=>x.Status== StatusOfDisk.RENTED).ToList();
             dtpReturnDiskDateActualReturn.SelectedDate = DateTime.Now;
         }
         private void tbxReturnSearchDiskID_TextChanged(object sender, TextChangedEventArgs e)
@@ -340,6 +355,7 @@ namespace VideoRentalStoreSystem.UI
                         if (result == 0)
                         {
                             MessageBox.Show(VRSSMessage.DiskReturnedSuccess, "Thông báo", MessageBoxButton.OK, MessageBoxImage.Information);
+                            reservationRepository.AddReservationReturnDisk(disk.DiskID);
                             lblReturnDiskMessage.Content = "";
                         }
                         else if(result == 3)
@@ -721,6 +737,24 @@ namespace VideoRentalStoreSystem.UI
                 txtManageTitleLateChargeTitleName.Focus();
                 return false;
             }
+            else if(txtManageTitleCostTitleName.Text=="")
+            {
+                MessageBox.Show(VRSSMessage.CostEmpty, "Thông báo", MessageBoxButton.OK, MessageBoxImage.Information);
+                txtManageTitleCostTitleName.Focus();
+                return false;
+            }
+            else if (txtManageTitlePeriodTitleName.Text =="")
+            {
+                MessageBox.Show(VRSSMessage.PeriodEmpty, "Thông báo", MessageBoxButton.OK, MessageBoxImage.Information);
+                txtManageTitlePeriodTitleName.Focus();
+                return false;
+            }
+            else if (txtManageTitleLateChargeTitleName.Text =="")
+            {
+                MessageBox.Show(VRSSMessage.LateChargeEmpty, "Thông báo", MessageBoxButton.OK, MessageBoxImage.Information);
+                txtManageTitleLateChargeTitleName.Focus();
+                return false;
+            }
             return true;
         }
         private void cboManageTitleCostTypeTitle_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -773,6 +807,116 @@ namespace VideoRentalStoreSystem.UI
                 }
             }
             LoadTabManageTitle();
+        }
+        #endregion
+
+        #region Manage Reservation - tab "QUẢN LÝ ĐẶT ĐĨA"
+        private void LoadTabManageReservation()
+        {
+            SetForegroundTab(Colors.Black, Colors.Black, Colors.Black, Colors.Black, Colors.Black, Colors.Blue, Colors.Black);
+
+            // load danh sách ID khách hàng
+            lbxManageReservationResultCusId.ItemsSource = null;
+            lbxManageReservationResultCusId.ItemsSource = customerRepository.GetCustomers().ToList();
+            // load danh sách tựa đề đĩa
+            lbxManageReservationListBoxTitleDisk.ItemsSource = null;
+            lbxManageReservationListBoxTitleDisk.ItemsSource = titleResponsitory.GetAll().ToList();
+            // load danh sách đặt đĩa
+            lvwManageReservation.ItemsSource = null;
+            lvwManageReservation.ItemsSource = reservationRepository.GetListReservation();
+        }
+        private bool ValidateAddReservation()
+        {
+            if(lbxManageReservationResultCusId.SelectedIndex ==-1)
+            {
+                MessageBox.Show(VRSSMessage.NotChooseCustomer, "Thông báo", MessageBoxButton.OK, MessageBoxImage.Information);
+                return false;
+            }
+            else if(lbxManageReservationListBoxTitleDisk.SelectedIndex==-1)
+            {
+                MessageBox.Show(VRSSMessage.NotChooseTitle, "Thông báo", MessageBoxButton.OK, MessageBoxImage.Information);
+                return false;
+            }
+            return true;
+        }
+        private void btnManageReservationAdd_Click(object sender, RoutedEventArgs e)
+        {
+            if(ValidateAddReservation())
+            {
+                Customer customer = new Customer();
+                TitleDisk title = new TitleDisk();
+                customer = (Customer)lbxManageReservationResultCusId.SelectedItem;
+                title = (TitleDisk)lbxManageReservationListBoxTitleDisk.SelectedItem;
+                ManageReservation reservation = new ManageReservation();
+                reservation.AddReservation(customer, title);
+                LoadTabManageReservation();
+            }
+        }
+        private void btnManageReservationDelete_Click(object sender, RoutedEventArgs e)
+        {
+            if(lvwManageReservation.SelectedIndex!=-1)
+            {
+                ManageReservation manageReservation = new ManageReservation();
+                foreach(Reservation re in lvwManageReservation.SelectedItems)
+                {
+                    if (re.DiskID != null)
+                        reservationRepository.AddReservationReturnDisk(re.DiskID);
+                    manageReservation.DeleteReservation(re);
+                }
+                LoadTabManageReservation();
+                
+            }
+            else
+            {
+                MessageBox.Show(VRSSMessage.NotChooseReservation, "Thông báo", MessageBoxButton.OK, MessageBoxImage.Information);
+            }
+        }
+        private void tbxManageReservationFindCusId_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            if(tbxManageReservationFindCusId.Text!="")
+            {
+                lbxManageReservationResultCusId.ItemsSource = null;
+                lbxManageReservationResultCusId.ItemsSource = customerRepository.GetAll().Where(x => x.CustomerID.ToString().Contains(tbxManageReservationFindCusId.Text)).ToList();
+            }
+            else
+            {
+                lbxManageReservationResultCusId.ItemsSource = null;
+                lbxManageReservationResultCusId.ItemsSource = customerRepository.GetAll().ToList();
+            }
+        }
+        private void lbxManageReservationResultCusId_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if(lbxManageReservationResultCusId.SelectedIndex!=-1)
+            {
+                Customer customer = new Customer();
+                customer = (Customer)lbxManageReservationResultCusId.SelectedItem;
+                lblManageReservationRentalIdCus.Content = customer.CustomerID;
+                lblManageReservationRentalNameCus.Content = customer.Name;
+                lblManageReservationRentalAddressCus.Content = customer.Address;
+                lblManageReservationRentalPhoneNumberCus.Content = customer.PhoneNumber;
+            }
+        }
+        private void tbxManageReservationSearch_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            if(tbxManageReservationSearch.Text!="")
+            {
+                lbxManageReservationListBoxTitleDisk.ItemsSource = null;
+                lbxManageReservationListBoxTitleDisk.ItemsSource = titleResponsitory.GetAll().Where(x => x.Title.Contains(tbxManageReservationSearch.Text)).ToList();
+            }
+            else
+            {
+                lbxManageReservationListBoxTitleDisk.ItemsSource = null;
+                lbxManageReservationListBoxTitleDisk.ItemsSource = titleResponsitory.GetAll().ToList();
+
+            }
+        }
+        private void lbxManageReservationListBoxTitleDisk_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+
+        }
+        private void lvwManageReservationD_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+
         }
         #endregion
 
@@ -1050,6 +1194,15 @@ namespace VideoRentalStoreSystem.UI
             }
             return true;
         }
+
+
+
+
+
+
+
+
+
 
 
 

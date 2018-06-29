@@ -4,17 +4,17 @@
 winexe
 C#
 .cs
-C:\Users\Dell\Desktop\VideoRentalStoreSystem-master\VideoRentalStoreSystem\VideoRentalStoreSystem.UI\obj\Debug\
+D:\Git_Local\Video-Rental\VideoRentalStoreSystem.UI\obj\Debug\
 VideoRentalStoreSystem.UI
 none
 false
 DEBUG;TRACE
-C:\Users\Dell\Desktop\VideoRentalStoreSystem-master\VideoRentalStoreSystem\VideoRentalStoreSystem.UI\App.xaml
+D:\Git_Local\Video-Rental\VideoRentalStoreSystem.UI\App.xaml
 3-840103405
 51001242449
-14-964915531
-28-399634757
+142070690852
+28-3857345
 LoginWindow.xaml;MainWindow.xaml;Splash.xaml;
 
-True
+False
 

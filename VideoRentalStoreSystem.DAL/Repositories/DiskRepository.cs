@@ -6,7 +6,7 @@ using VideoRentalStoreSystem.DAL.Models;
 
 namespace VideoRentalStoreSystem.DAL.Repositories
 {
-    public class DiskRepository : GenericRepository<DBVRContext, Disk>, IDiskRepository<Disk>
+    public class DiskRepository : GenericRepository<DBVRContext, Disk>
     {
         public DiskRepository(DBVRContext context) : base(context)
         {
@@ -115,12 +115,12 @@ namespace VideoRentalStoreSystem.DAL.Repositories
 
         public Disk Get(int id)
         {
-            return _context.Disks.Find(id);
+            return _context.Disks.Where(x=>x.DiskID.Equals(id) && x.Status!= StatusOfDisk.DELETE).FirstOrDefault();
         }
 
-        public IQueryable<Disk> Get(string status)
+        public IQueryable<Disk> Get()
         {
-            return _context.Disks.OrderBy(y => y.DiskID).Where(x => x.Status.Equals(status));
+            return _context.Disks.OrderBy(y => y.DiskID).Where(x => x.Status != StatusOfDisk.DELETE);
         }
 
         public IQueryable<Disk> GetByTitle(string title)
@@ -140,6 +140,10 @@ namespace VideoRentalStoreSystem.DAL.Repositories
         public IQueryable<Disk> GetDisks()
         {
             return _context.Disks.OrderBy(y => y.DiskID).Where(x => x.Status != StatusOfDisk.DELETE);
+        }
+        public IQueryable<Disk> GetDisksReservation()
+        {
+            return _context.Disks.OrderBy(y => y.DiskID).Where(x => x.Status != StatusOfDisk.DELETE && x.Status != StatusOfDisk.ON_HOLD);
         }
         public void DeleteDisk(List<Disk> listDisk)
         {

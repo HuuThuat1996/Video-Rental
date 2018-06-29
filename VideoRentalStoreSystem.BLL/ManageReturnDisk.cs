@@ -12,11 +12,13 @@ namespace VideoRentalStoreSystem.BLL
         private RentalRecordDetailRepository detailRepository;
         private DiskRepository diskRepository;
         private RentalRecordRepository recordRepository;
+        private ReservationRepository reservationRepository;
         public ManageReturnDisk( )
         {
             detailRepository = new RentalRecordDetailRepository(new DBVRContext());
             diskRepository = new DiskRepository(new DBVRContext());
             recordRepository = new RentalRecordRepository(new DBVRContext());
+            reservationRepository = new ReservationRepository(new DBVRContext());
         }
         /// <summary>
         /// 
@@ -35,6 +37,7 @@ namespace VideoRentalStoreSystem.BLL
                 AddLateCharge addLateCharge = new AddLateCharge();
                 RentalRecordDetail detailLatest = detailRepository.GetLatest(disk.DiskID);
                 RentalRecord rentalRecord = recordRepository.Get(detailLatest.RentalRecordID);
+
                 if (detailLatest != null)
                 {
                     if (dateReturn > detailLatest.DateReturn.Date)
@@ -62,6 +65,7 @@ namespace VideoRentalStoreSystem.BLL
                                 detailLatest.DateReturnActual = dateReturn;
                                 detailRepository.Update(detailLatest);
                                 diskRepository.ModifyStatus(disk, StatusOfDisk.ON_SHELF);
+                                //reservationRepository.AddReservationReturnDisk(disk.DiskID);
                                 transaction.Complete();
                                 return 0;
                             }

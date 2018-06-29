@@ -34,6 +34,9 @@
                             Background="{x:Null}" BorderBrush="{x:Null}" 
                             Click="btnTabItemManageTitleDisk_Click" 
                             Padding="5"/>
+            <Button Name="btnTabItemManageReservationDisk" Content="QUẢN LÝ ĐẶT ĐĨA" 
+                            Background="{x:Null}" BorderBrush="{x:Null}" 
+                            Padding="5" Click="btnTabItemManageReservationDisk_Click"/>
             <Button Name="btnTabItemManageInventory" Content="QUẢN LÝ TỒN KHO" 
                             Background="{x:Null}"
                             BorderBrush="{x:Null}" 
@@ -46,7 +49,7 @@
                             Padding="5"
                             IsEnabled="False"/>
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Right"
-                        Margin="450,0,0,0">
+                        Margin="400,0,0,0">
                 <Button Content="Đăng nhập" Name="btnLogin"
                             Background="{x:Null}" BorderBrush="{x:Null}"
                             Click="btnLogin_Click" />
@@ -163,7 +166,7 @@
                                                     <GridViewColumn Header="" Width="50">
                                                         <GridViewColumn.CellTemplate>
                                                             <DataTemplate>
-                                                                <CheckBox Content="{Binding DiskID}" IsChecked="{Binding IsSelected, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ListViewItem}}}"/>
+                                                                <CheckBox  IsChecked="{Binding IsSelected, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ListViewItem}}}"/>
                                                             </DataTemplate>
                                                         </GridViewColumn.CellTemplate>
                                                     </GridViewColumn>
@@ -466,7 +469,108 @@
                         </Grid>
                     </Grid>
                 </TabItem>
-                <!--*******************************************************-->
+                <!--************************ Item Manage Reservation  ***************************** -->
+                <TabItem x:Name="tabItemManageReservation" Background="{DynamicResource {x:Static SystemColors.ControlLightLightBrushKey}}" Padding="0" Margin="0">
+                    <Grid Margin="0">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="30"/>
+                            <RowDefinition/>
+                        </Grid.RowDefinitions>
+                        <Grid Grid.Row="1" Margin="0,10,0,0">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="300"/>
+                                <ColumnDefinition Width="44*"/>
+                                <ColumnDefinition Width="87*"/>
+                            </Grid.ColumnDefinitions>
+                            <StackPanel Grid.Column="0" Orientation="Vertical" Margin="30,0,30,0">
+                                <GroupBox Header="Danh sách mã khách hàng" Height="200">
+                                    <StackPanel Orientation="Vertical">
+                                        <StackPanel Orientation="Horizontal" Margin="0,10,0,0">
+                                            <Label Content="Tìm mã khách hàng" Padding="0" Margin="0,0,10,0"/>
+                                            <TextBox x:Name="tbxManageReservationFindCusId" Width="100"  Tag="1" TextChanged="tbxManageReservationFindCusId_TextChanged"/>
+                                        </StackPanel>
+                                        <ListBox x:Name="lbxManageReservationResultCusId" Margin="0,10,10,0" Height="135"  SelectionMode="Single" BorderBrush="{x:Null}" Tag="2" SelectionChanged="lbxManageReservationResultCusId_SelectionChanged">
+                                            <ListBox.ItemTemplate>
+                                                <DataTemplate>
+                                                    <TextBlock Text="{Binding CustomerID}"/>
+                                                </DataTemplate>
+                                            </ListBox.ItemTemplate>
+                                        </ListBox>
+                                    </StackPanel>
+                                </GroupBox>
+                                <GroupBox Header="Thông tin khách hàng" Margin="0,10,0,0" Height="142" Padding="0,5,0,0">
+                                    <!-- Title -->
+                                    <StackPanel Orientation="Vertical">
+                                        <StackPanel Orientation="Horizontal">
+                                            <Label Content="Mã:"/>
+                                            <Label x:Name="lblManageReservationRentalIdCus" Foreground="#FF0007FF" Content="Mã"/>
+                                        </StackPanel>
+                                        <StackPanel Orientation="Horizontal">
+                                            <Label Content="Họ tên:"/>
+                                            <Label x:Name="lblManageReservationRentalNameCus" Foreground="#FF0007FF" Content="Ho ten"/>
+                                        </StackPanel>
+                                        <StackPanel Orientation="Horizontal">
+                                            <Label Content="Địa chỉ:"/>
+                                            <Label x:Name="lblManageReservationRentalAddressCus" Foreground="#FF0007FF" Content="Dia chi"/>
+                                        </StackPanel>
+                                        <StackPanel Orientation="Horizontal">
+                                            <Label Content="Số điện thoại:"/>
+                                            <Label x:Name="lblManageReservationRentalPhoneNumberCus" Foreground="#FF0007FF" Content="01482737"/>
+                                        </StackPanel>
+                                        <StackPanel Orientation="Horizontal"/>
+                                    </StackPanel>
+                                </GroupBox>
+                            </StackPanel>
+                            <GroupBox Header="Danh sách tựa đề" Grid.Column="1" HorizontalAlignment="Left" Margin="30,0,0,0" Width="288">
+                                <StackPanel Margin="0,20,0,0">
+                                    <StackPanel Orientation="Horizontal">
+                                        <Label Content="Tìm tựa đề" Margin="0,0,10,0" Padding="0"/>
+                                        <TextBox x:Name="tbxManageReservationSearch" Width="200"  Tag="1" TextChanged="tbxManageReservationSearch_TextChanged"/>
+                                    </StackPanel>
+                                    <ListBox x:Name="lbxManageReservationListBoxTitleDisk" SelectionMode="Single" Height="370" Width="276" Margin="0,20,0,0" Tag="2" SelectionChanged="lbxManageReservationListBoxTitleDisk_SelectionChanged" >
+                                        <ListBox.ItemTemplate>
+                                            <DataTemplate>
+                                                <TextBlock Text="{Binding Title}"/>
+                                            </DataTemplate>
+                                        </ListBox.ItemTemplate>
+                                    </ListBox>
+
+                                    <StackPanel >
+                                        <Button x:Name="btnManageReservationAdd" Content="Đặt đĩa" Height="30" Margin="0,10,169,10" Background="{x:Null}" Click="btnManageReservationAdd_Click"/>
+                                    </StackPanel>
+                                </StackPanel>
+
+                            </GroupBox>
+                            <!-- Area mid-right -->
+
+                            <GroupBox Header="Danh sách đặt đĩa" Grid.Column="2" HorizontalAlignment="Left" Margin="23,1,0,-1" Width="655" RenderTransformOrigin="0.5,0.5">
+                                <GroupBox.RenderTransform>
+                                    <TransformGroup>
+
+                                        <TranslateTransform/>
+                                    </TransformGroup>
+                                </GroupBox.RenderTransform>
+                                <StackPanel Margin="0,0,0,0">
+                                    <ListView x:Name="lvwManageReservation" Padding="0"  Height="416" Margin="10,20,0,0" Tag="5" HorizontalAlignment="Left" SelectionMode="Multiple" Width="606" SelectionChanged="lvwManageReservationD_SelectionChanged">
+                                        <ListView.View>
+                                            <GridView>
+                                                <GridViewColumn Header="Tên khách hàng" Width="200" DisplayMemberBinding="{Binding Customer.Name}"/>
+                                                <GridViewColumn Header="Ngày đặt" Width="150" DisplayMemberBinding="{Binding DateReservation}"/>
+                                                <GridViewColumn Header="Tựa đề" Width="140" DisplayMemberBinding="{Binding Title}"/>
+                                                <GridViewColumn Header="Mã đĩa" Width="100" DisplayMemberBinding="{Binding DiskID}"/>
+                                            </GridView>
+                                        </ListView.View>
+                                    </ListView>
+                                    <StackPanel>
+                                        <Button x:Name="btnManageReservationDelete" Content="Xóa đặt đĩa" Height="30" Margin="10,10,409,10" Background="{x:Null}" Click="btnManageReservationDelete_Click" />
+                                    </StackPanel>
+                                </StackPanel>
+
+                            </GroupBox>
+                        </Grid>
+                    </Grid>
+                </TabItem>
+                <!--*******************************Manage Inventory************************-->
                 <TabItem x:Name="tabItemManageInventory" Background="{DynamicResource {x:Static SystemColors.ControlLightLightBrushKey}}" Padding="0" Margin="0">
                     <Grid Margin="0" >
                         <Grid.RowDefinitions>
@@ -475,12 +579,12 @@
                         </Grid.RowDefinitions>
                         <Grid Grid.Row="1" >
                             <Grid.ColumnDefinitions>
-                                <ColumnDefinition/>
-                                <ColumnDefinition/>
-                                <ColumnDefinition/>
+                                <ColumnDefinition Width="449*"/>
+                                <ColumnDefinition Width="419*"/>
+                                <ColumnDefinition Width="480*"/>
                             </Grid.ColumnDefinitions>
                             <!-- area left -->
-                            <GroupBox Header="Danh sách tựa đề" Grid.Column="0" HorizontalAlignment="Left" Margin="30,0,0,0">
+                            <GroupBox Header="Danh sách tựa đề" Grid.Column="0" HorizontalAlignment="Left" Margin="30,0,0,0" Width="412">
                                 <StackPanel Margin="0,20,0,0">
                                     <StackPanel Orientation="Horizontal">
                                         <Label Content="Tìm tựa đề" Margin="0,0,10,0" Padding="0"/>
@@ -496,7 +600,7 @@
                                 </StackPanel>
                             </GroupBox>
                             <!-- area middle -->
-                            <GroupBox Header="Danh sách đĩa" Grid.Column="1" HorizontalAlignment="Left" Margin="30,0,0,0">
+                            <GroupBox Header="Danh sách đĩa" Grid.Column="1" HorizontalAlignment="Left" Margin="30,0,0,0" Width="369">
                                 <StackPanel>
                                     <Label x:Name="lblManageInventoryDiskTitle" Padding="0" Margin="10,10,0,10" Background="{x:Null}" Content="" Foreground="#FF001EFF" FontWeight="Bold" FontSize="30" VerticalAlignment="Center"/>
                                     <StackPanel Orientation="Horizontal" Margin="10,0,0,0">
@@ -515,18 +619,19 @@
 
                                 </StackPanel>
                             </GroupBox>
-                            <GroupBox Header="Danh sách đĩa" Grid.Column="2" HorizontalAlignment="Left" Margin="30,0,0,0">
+                            <GroupBox Header="Danh sách đĩa" Grid.Column="2" HorizontalAlignment="Left" Margin="30,0,0,0" Width="408">
                                 <StackPanel>
                                     <StackPanel Orientation="Horizontal" Margin="10,10,0,0">
                                         <Label Content="Tìm mã đĩa" Padding="0" VerticalAlignment="Center"/>
                                         <TextBox x:Name="tbxManageInventoryFindDiskID" Margin="10,0,10,0" Width="100" Height="20" Padding="0" VerticalAlignment="Center" Tag="3" TextChanged="tbxManageInventoryFindDiskID_TextChanged"/>
 
                                     </StackPanel>
-                                    <ListView x:Name="lvwManageInventoryListDeleteIdDiskOfTitle" Width="357" Height="425" Margin="0,20,0,0" Tag="5">
+                                    <ListView x:Name="lvwManageInventoryListDeleteIdDiskOfTitle" Height="425" Margin="10,20,10,0" Tag="5">
                                         <ListView.View>
                                             <GridView>
-                                                <GridViewColumn Header="Mã đĩa" Width="100" DisplayMemberBinding="{Binding DiskID}"/>
-                                                <GridViewColumn Header="Trạng thái" Width="200" DisplayMemberBinding="{Binding Status}"/>
+                                                <GridViewColumn Header="Mã đĩa" Width="50" DisplayMemberBinding="{Binding DiskID}"/>
+                                                <GridViewColumn Header="Tựa đề" Width="210" DisplayMemberBinding="{Binding TitleDisk.Title}"/>
+                                                <GridViewColumn Header="Trạng thái" Width="80" DisplayMemberBinding="{Binding Status}"/>
                                             </GridView>
                                         </ListView.View>
                                     </ListView>
